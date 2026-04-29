@@ -23,20 +23,34 @@ export default function LoginPage() {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <input
-        placeholder="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        placeholder="password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleLogin}>Login</button>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-blue-900">
+      <div className="bg-gray-200 flex flex-col gap-3 p-6 rounded-2xl border-2 border-green-600 shadow-2xl w-full max-w-md">
+        <h2 className="text-black text-xl font-semibold text-center">
+          Service Desk
+        </h2>
+
+        <input
+          className="border p-2 rounded"
+          placeholder="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <input
+          className="border p-2 rounded"
+          placeholder="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button
+          className="bg-blue-600 text-white p-2 rounded hover:bg-blue-800 transition"
+          onClick={handleLogin}
+        >
+          Log in
+        </button>
+      </div>
     </div>
   );
 }

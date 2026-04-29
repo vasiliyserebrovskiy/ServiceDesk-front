@@ -52,6 +52,13 @@
 }
 
 #root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+/* #root {
   width: 1126px;
   max-width: 100%;
   margin: 0 auto;
@@ -61,18 +68,18 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-}
+} */
 
 body {
   margin: 0;
 }
 
 h1,
-h2 {
+/* h2 {
   font-family: var(--heading);
   font-weight: 500;
   color: var(--text-h);
-}
+} */
 
 h1 {
   font-size: 56px;
