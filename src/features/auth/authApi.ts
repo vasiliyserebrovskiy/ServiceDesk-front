@@ -6,3 +6,8 @@ export const loginRequest = async (email: string, password: string) => {
     password,
   });
 };
+
+export const meRequest = async () => {
+  const { data } = await api.get("/v1/users/me");
+  return data;
+};
