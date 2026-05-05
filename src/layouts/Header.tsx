@@ -28,10 +28,8 @@ export default function Header() {
   };
 
   return (
-    <header className="flex gap-4 p-3 bg-[#0d2b5c]">
+    <header className="flex items-center gap-4 p-3 bg-[#0d2b5c]">
       <img src="/logo.svg" alt="Service Desk" className="h-10" />
-
-      <div>Service Desk</div>
 
       <nav className="flex gap-2.5">
         <button>Dashboard</button>
@@ -39,11 +37,18 @@ export default function Header() {
         <button>Projects</button>
       </nav>
 
-      <div className="ml-auto">
-        {user?.firstname ?? "Guest"} {user?.lastname}
+      <div className="ml-auto flex items-center gap-3">
+        <span className="text-white">
+          {user?.firstname ?? "Guest"} {user?.lastname}
+        </span>
       </div>
 
-      <button onClick={handleLogout}>Logout</button>
+      <button
+        onClick={handleLogout}
+        className="px-3 py-1 rounded-md border border-white/30 text-white text-sm bg-white/5 hover:bg-white/15 hover:border-white/50 shadow-sm hover:shadow transition active:scale-95 active:shadow-none"
+      >
+        Logout
+      </button>
     </header>
   );
 }
