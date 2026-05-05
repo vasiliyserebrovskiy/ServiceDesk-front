@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { setAuth } from "../../features/auth/authSlice";
 import { loginRequest } from "../../features/auth/authApi";
 import { useNavigate } from "react-router-dom";
+import { meRequest } from "../../features/auth/authApi";
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -15,7 +16,10 @@ export default function LoginPage() {
     try {
       await loginRequest(email, password);
 
-      dispatch(setAuth());
+      const user = await meRequest();
+      //TODO: remove temp consolelog()
+      //console.log(user);
+      dispatch(setAuth(user));
       navigate("/");
     } catch (e) {
       console.error(e);

@@ -1,12 +1,14 @@
-export default function MainLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+import { Outlet } from "react-router-dom";
+import Header from "./Header";
+
+export default function MainLayout() {
   return (
     <div>
-      <header>Service Desk</header>
-      <main>{children}</main>
+      <Header />
+
+      <main>
+        <Outlet />
+      </main>
     </div>
   );
 }

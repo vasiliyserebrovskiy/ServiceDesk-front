@@ -7,9 +7,17 @@ export default function ProtectedRoute({
 }: {
   children: React.ReactNode;
 }) {
-  const isAuth = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const { isAuthenticated, isLoading } = useSelector(
+    (state: RootState) => state.auth,
+  );
 
-  if (!isAuth) {
+  // 🔥 1. Ждём bootstrap
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  // 🔥 2. Только потом решаем редирект
+  if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
 

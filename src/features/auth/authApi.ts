@@ -11,3 +11,7 @@ export const meRequest = async () => {
   const { data } = await api.get("/v1/users/me");
   return data;
 };
+
+export const logoutRequest = async () => {
+  await api.post("/v1/auth/logout");
+};
