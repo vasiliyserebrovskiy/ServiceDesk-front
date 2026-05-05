@@ -29,6 +29,8 @@ export default function Header() {
 
   return (
     <header className="flex gap-4 p-3 bg-[#0d2b5c]">
+      <img src="/logo.svg" alt="Service Desk" className="h-10" />
+
       <div>Service Desk</div>
 
       <nav className="flex gap-2.5">

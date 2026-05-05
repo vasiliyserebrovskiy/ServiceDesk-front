@@ -17,8 +17,6 @@ export default function LoginPage() {
       await loginRequest(email, password);
 
       const user = await meRequest();
-      //TODO: remove temp consolelog()
-      //console.log(user);
       dispatch(setAuth(user));
       navigate("/");
     } catch (e) {
@@ -27,8 +25,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-blue-900">
-      <div className="bg-gray-200 flex flex-col gap-3 p-6 rounded-2xl border-2 border-green-600 shadow-2xl w-full max-w-md">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#0d2b5c]">
+      <div className="bg-white flex flex-col gap-3 p-6 rounded-2xl border border-gray-200 shadow-md w-full max-w-md">
         <h2 className="text-black text-xl font-semibold text-center">
           Service Desk
         </h2>

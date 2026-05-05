@@ -11,12 +11,10 @@ export default function ProtectedRoute({
     (state: RootState) => state.auth,
   );
 
-  // 🔥 1. Ждём bootstrap
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  // 🔥 2. Только потом решаем редирект
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
