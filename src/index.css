@@ -117,3 +117,15 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+/*Toast*/
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}

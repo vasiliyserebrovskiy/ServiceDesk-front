@@ -1,6 +1,7 @@
 import axios from "axios";
 import { store } from "../app/store";
 import { clearAuth } from "../features/auth/authSlice";
+import { setError } from "../features/error/errorSlice";
 
 type QueueItem = {
   resolve: (value?: unknown) => void;
@@ -33,8 +34,16 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    const isAuthRequest =
+      originalRequest.url?.includes("/auth/login") ||
+      originalRequest.url?.includes("/auth/refresh-token");
+
     // if the access token has expired
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !isAuthRequest
+    ) {
       originalRequest._retry = true;
 
       // if refresh is already underway, we put it in the queue.
@@ -68,6 +77,16 @@ api.interceptors.response.use(
       }
     }
 
+    // all error messages
+    const skipToast = error.config?.meta?.skipToast;
+    if (!isAuthRequest && !skipToast) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+
+      store.dispatch(setError(message));
+    }
     return Promise.reject(error);
   },
 );

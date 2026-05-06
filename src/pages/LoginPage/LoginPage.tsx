@@ -4,6 +4,11 @@ import { setAuth } from "../../features/auth/authSlice";
 import { loginRequest } from "../../features/auth/authApi";
 import { useNavigate } from "react-router-dom";
 import { meRequest } from "../../features/auth/authApi";
+import axios from "axios";
+
+type ErrorResponse = {
+  message: string;
+};
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -11,16 +16,29 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async () => {
     try {
+      setError(null);
+
+      if (!email || !password) {
+        setError("Email and password are required");
+        return;
+      }
       await loginRequest(email, password);
 
       const user = await meRequest();
       dispatch(setAuth(user));
       navigate("/");
-    } catch (e) {
-      console.error(e);
+    } catch (e: unknown) {
+      if (axios.isAxiosError<ErrorResponse>(e)) {
+        const message = e.response?.data?.message || "Login failed";
+
+        setError(message);
+      } else {
+        setError("Unexpected error");
+      }
     }
   };
 
@@ -30,6 +48,10 @@ export default function LoginPage() {
         <h2 className="text-black text-xl font-semibold text-center">
           Service Desk
         </h2>
+
+        {error && (
+          <div className="text-red-500 text-sm text-center">{error}</div>
+        )}
 
         <input
           className="border p-2 rounded"

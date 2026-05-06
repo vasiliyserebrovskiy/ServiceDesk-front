@@ -1,10 +1,18 @@
 import { api } from "../../api/axios";
 
 export const loginRequest = async (email: string, password: string) => {
-  await api.post("/v1/auth/login", {
-    email,
-    password,
-  });
+  await api.post(
+    "/v1/auth/login",
+    {
+      email,
+      password,
+    },
+    {
+      meta: {
+        skipToast: true,
+      },
+    },
+  );
 };
 
 export const meRequest = async () => {
