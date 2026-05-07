@@ -10,7 +10,7 @@ export default function NavigationMenu() {
 
   return (
     <nav className="flex gap-4 items-center">
-      <NavLink to="/" className="text-white">
+      <NavLink to="/" className="text-white select-none hover:text-blue-600">
         Home
       </NavLink>
 
@@ -18,7 +18,10 @@ export default function NavigationMenu() {
 
       {user?.role === "ADMIN" && <AdminMenu />}
 
-      <NavLink to="/profile" className="text-white">
+      <NavLink
+        to="/profile"
+        className="text-white selectnone hover:text-blue-600"
+      >
         Profile
       </NavLink>
     </nav>
