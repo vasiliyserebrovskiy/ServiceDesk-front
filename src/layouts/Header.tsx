@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { clearAuth } from "../features/auth/authSlice";
 import { logoutRequest } from "../features/auth/authApi";
 import { useNavigate } from "react-router-dom";
+import NavigationMenu from "../components/navigation/NavigationMenu";
 
 export default function Header() {
   const dispatch = useAppDispatch();
@@ -32,9 +33,7 @@ export default function Header() {
       <img src="/logo.svg" alt="Service Desk" className="h-10" />
 
       <nav className="flex gap-2.5">
-        <button>Home</button>
-        <button>All</button>
-        <button>Profile</button>
+        <NavigationMenu />
       </nav>
 
       <div className="ml-auto flex items-center gap-3">
