@@ -32,9 +32,9 @@ export default function Header() {
       <img src="/logo.svg" alt="Service Desk" className="h-10" />
 
       <nav className="flex gap-2.5">
-        <button>Dashboard</button>
-        <button>Tickets</button>
-        <button>Projects</button>
+        <button>Home</button>
+        <button>All</button>
+        <button>Profile</button>
       </nav>
 
       <div className="ml-auto flex items-center gap-3">
