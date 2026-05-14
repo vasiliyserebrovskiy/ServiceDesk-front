@@ -3,7 +3,6 @@ import { formatRole } from "../../shared/utils/roleFormatter";
 
 export default function ProfilePage() {
   const { user } = useAppSelector((state) => state.auth);
-  console.log(user);
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
       <div className="max-w-xl w-full bg-white shadow-lg rounded-2xl px-8 py-8">
