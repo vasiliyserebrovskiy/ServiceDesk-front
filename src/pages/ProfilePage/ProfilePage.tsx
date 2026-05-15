@@ -4,7 +4,7 @@ import { formatRole } from "../../shared/utils/roleFormatter";
 export default function ProfilePage() {
   const { user } = useAppSelector((state) => state.auth);
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+    <div className="min-h-screen flex justify-center bg-gray-50 p-6">
       <div className="max-w-xl w-full bg-white shadow-lg rounded-2xl px-8 py-8">
         <h1 className="text-gray-500 text-2xl sm:text-3xl font-bold mb-4 whitespace-nowrap text-center">
           User Profile

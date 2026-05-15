@@ -67,6 +67,17 @@ export default function AdminMenu() {
               Create User
             </NavLink>
           </div>
+
+          <div className="flex flex-col gap-2">
+            <NavLink
+              to="/admin/roles"
+              className="hover:text-blue-600"
+              // close the menu after selecting
+              onClick={() => setIsOpen(false)}
+            >
+              Role List
+            </NavLink>
+          </div>
         </div>
       )}
     </div>
