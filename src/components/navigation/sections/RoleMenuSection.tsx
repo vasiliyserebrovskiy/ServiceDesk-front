@@ -5,7 +5,7 @@ type Props = {
   closeAll: () => void;
 };
 
-export default function ProblemMenuSection({ closeAll }: Props) {
+export default function RoleMenuSection({ closeAll }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -19,33 +19,18 @@ export default function ProblemMenuSection({ closeAll }: Props) {
           hover:text-blue-600
         "
       >
-        Problem
+        Roles
       </button>
 
       {isOpen && (
         <div className="ml-4 mt-2 flex flex-col gap-1">
           <NavLink
-            to="/problems/create"
-            onClick={closeAll}
+            to="/admin/roles"
             className="hover:text-blue-600"
-          >
-            Create New
-          </NavLink>
-
-          <NavLink
-            to="/problems/open"
+            // close the menu after selecting
             onClick={closeAll}
-            className="hover:text-blue-600"
           >
-            Open
-          </NavLink>
-
-          <NavLink
-            to="/problems/closed"
-            onClick={closeAll}
-            className="hover:text-blue-600"
-          >
-            Closed
+            Role List
           </NavLink>
         </div>
       )}

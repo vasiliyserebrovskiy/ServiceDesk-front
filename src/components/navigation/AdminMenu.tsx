@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import RoleMenuSection from "./sections/RoleMenuSection";
+import UserMenuSection from "./sections/UserMenuSection";
 
 export default function AdminMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -7,18 +8,20 @@ export default function AdminMenu() {
   // link to the menu container
   const menuRef = useRef<HTMLDivElement | null>(null);
 
+  const closeAll = () => {
+    setIsOpen(false);
+  };
+
   // closing when clicked outside the menu
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      // target = the clicked element
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        closeAll();
       }
-    }
+    };
 
     document.addEventListener("mousedown", handleClickOutside);
 
-    // cleanup
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -57,27 +60,8 @@ export default function AdminMenu() {
             z-50
           "
         >
-          <div className="flex flex-col gap-2">
-            <NavLink
-              to="/admin/create-user"
-              className="hover:text-blue-600"
-              // close the menu after selecting
-              onClick={() => setIsOpen(false)}
-            >
-              Create User
-            </NavLink>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <NavLink
-              to="/admin/roles"
-              className="hover:text-blue-600"
-              // close the menu after selecting
-              onClick={() => setIsOpen(false)}
-            >
-              Role List
-            </NavLink>
-          </div>
+          <RoleMenuSection closeAll={closeAll} />
+          <UserMenuSection closeAll={closeAll} />
         </div>
       )}
     </div>
