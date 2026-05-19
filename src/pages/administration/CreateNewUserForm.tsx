@@ -1,4 +1,4 @@
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import type { FormikHelpers } from "formik";
 
@@ -6,6 +6,9 @@ import PasswordField from "../../components/form/PasswordField";
 import { useUsers } from "../../shared/hooks/useUsers";
 
 import type { UserFormValues } from "../../shared/types/usersTypes";
+import FormEditField from "../../components/form/FormEditField";
+import FormListField from "../../components/form/FormListField";
+import FormDescField from "../../components/form/FormDescField";
 
 const validationSchema = Yup.object({
   firstname: Yup.string().required("Required"),
@@ -22,6 +25,12 @@ const validationSchema = Yup.object({
 
 export default function CreateNewUserForm() {
   const { createUser } = useUsers();
+  //TODO: this is temporary, will replase with useRole
+  const roles = [
+    { value: "USER", label: "User" },
+    { value: "MANAGER", label: "Manager" },
+    { value: "ADMIN", label: "Admin" },
+  ];
 
   const initialValues: UserFormValues = {
     firstname: "",
@@ -56,6 +65,7 @@ export default function CreateNewUserForm() {
   return (
     <div className="flex justify-center bg-gray-50">
       <div className="w-full max-w-3xl p-6">
+        <h2 className="text-gray-500 text-center">Create New User</h2>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -64,47 +74,16 @@ export default function CreateNewUserForm() {
           {({ values, errors, touched, setFieldValue, setFieldTouched }) => (
             <Form className="grid grid-cols-2 gap-4">
               {/* FIRSTNAME */}
-              <div className="flex flex-col text-black">
-                <label>Firstname</label>
-                <Field name="firstname" className="border p-2 rounded" />
-                {touched.firstname && errors.firstname && (
-                  <span className="text-red-500 text-sm">
-                    {errors.firstname}
-                  </span>
-                )}
-              </div>
+              <FormEditField label="Firstname" name="firstname" />
 
               {/* LASTNAME */}
-              <div className="flex flex-col text-black">
-                <label>Lastname</label>
-                <Field name="lastname" className="border p-2 rounded" />
-                {touched.lastname && errors.lastname && (
-                  <span className="text-red-500 text-sm">
-                    {errors.lastname}
-                  </span>
-                )}
-              </div>
+              <FormEditField label="Lastname" name="lastname" />
 
               {/* EMAIL */}
-              <div className="flex flex-col text-black">
-                <label>Email</label>
-                <Field name="email" className="border p-2 rounded" />
-                {touched.lastname && errors.email && (
-                  <span className="text-red-500 text-sm">{errors.email}</span>
-                )}
-              </div>
+              <FormEditField label="Email" name="email" />
 
               {/* ROLE */}
-              <div className="flex flex-col text-black">
-                <label>Role</label>
-                <Field as="select" name="role" className="border p-2 rounded">
-                  <option value="USER">USER</option>
-                  <option value="ADMIN">ADMIN</option>
-                </Field>
-                {touched.role && errors.role && (
-                  <span className="text-red-500 text-sm">{errors.role}</span>
-                )}
-              </div>
+              <FormListField label="Role" name="role" options={roles} />
 
               {/* PASSWORD */}
               <div className="flex flex-col">
@@ -113,6 +92,7 @@ export default function CreateNewUserForm() {
                   onChange={(val) => setFieldValue("password", val)}
                   onBlur={() => setFieldTouched("password", true)}
                   labelClassName="text-black"
+                  inputClassName="border border-black p-2 rounded w-full pr-10"
                 />
                 {touched.password && errors.password && (
                   <span className="text-red-500 text-sm">
@@ -130,6 +110,7 @@ export default function CreateNewUserForm() {
                   label="Confirm Password"
                   placeholder="confirm password"
                   labelClassName="text-black"
+                  inputClassName="border border-black p-2 rounded w-full pr-10"
                 />
                 {touched.confirmPassword && errors.confirmPassword && (
                   <span className="text-red-500 text-sm">
@@ -139,20 +120,14 @@ export default function CreateNewUserForm() {
               </div>
 
               {/* DESCRIPTION */}
-              <div className="col-span-2 flex flex-col text-black">
-                <label>Description</label>
-                <Field
-                  as="textarea"
-                  name="description"
-                  className="border p-2 rounded"
-                />
-              </div>
+              <FormDescField label="Description" name="description" />
 
               {/* AVATAR */}
-              <div className="col-span-2 flex flex-col text-black">
-                <label>Avatar URL</label>
-                <Field name="avatarUrl" className="border p-2 rounded" />
-              </div>
+              <FormEditField
+                label="Avatar URL"
+                name="avatarUrl"
+                divClassName="col-span-2 flex flex-col text-black"
+              />
 
               {/* SUBMIT */}
               <div className="col-span-2 flex justify-center mt-4">

@@ -10,6 +10,7 @@ type Props = {
 
   className?: string;
   labelClassName?: string;
+  inputClassName?: string;
 
   onBlur?: () => void;
 };
@@ -21,6 +22,7 @@ export default function PasswordField({
   placeholder = "password",
   className = "",
   labelClassName = "text-sm text-gray-600",
+  inputClassName = "border p-2 rounded w-full pr-10",
   onBlur,
 }: Props) {
   const [show, setShow] = useState(false);
@@ -31,7 +33,7 @@ export default function PasswordField({
 
       <div className="relative">
         <input
-          className="border p-2 rounded w-full pr-10"
+          className={inputClassName}
           type={show ? "text" : "password"}
           placeholder={placeholder}
           value={value}
