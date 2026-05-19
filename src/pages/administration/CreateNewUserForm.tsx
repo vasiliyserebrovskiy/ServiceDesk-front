@@ -1,36 +1,28 @@
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
 import type { FormikHelpers } from "formik";
-
 import PasswordField from "../../components/form/PasswordField";
 import { useUsers } from "../../shared/hooks/useUsers";
-
 import type { UserFormValues } from "../../shared/types/usersTypes";
 import FormEditField from "../../components/form/FormEditField";
 import FormListField from "../../components/form/FormListField";
 import FormDescField from "../../components/form/FormDescField";
-
-const validationSchema = Yup.object({
-  firstname: Yup.string().required("Required"),
-  lastname: Yup.string().required("Required"),
-  email: Yup.string().email("Invalid email").required("Required"),
-  password: Yup.string().min(6, "Min 6 chars").required("Required"),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Passwords must match")
-    .required("Required"),
-  role: Yup.string().required("Required"),
-  description: Yup.string(),
-  avatarUrl: Yup.string(),
-});
+import { useRoles } from "../../shared/hooks/useRoles";
+import { UserValidation } from "../../shared/validation/userValidation";
+import { roleLabels } from "../../shared/types/roleTypes";
 
 export default function CreateNewUserForm() {
   const { createUser } = useUsers();
-  //TODO: this is temporary, will replase with useRole
-  const roles = [
-    { value: "USER", label: "User" },
-    { value: "MANAGER", label: "Manager" },
-    { value: "ADMIN", label: "Admin" },
-  ];
+  const { roles, isLoading } = useRoles();
+
+  if (isLoading) {
+    return <div>Loading roles...</div>;
+  }
+
+  const roleOptions =
+    roles?.map((role) => ({
+      value: role.name,
+      label: roleLabels[role.name] || role.name,
+    })) || [];
 
   const initialValues: UserFormValues = {
     firstname: "",
@@ -38,7 +30,7 @@ export default function CreateNewUserForm() {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "USER",
+    role: roles?.[0]?.name || "",
     description: "",
     avatarUrl: "",
   };
@@ -56,9 +48,7 @@ export default function CreateNewUserForm() {
       description: values.description,
       avatarUrl: values.avatarUrl,
     };
-
     await createUser(payload);
-
     resetForm();
   };
 
@@ -67,8 +57,9 @@ export default function CreateNewUserForm() {
       <div className="w-full max-w-3xl p-6">
         <h2 className="text-gray-500 text-center">Create New User</h2>
         <Formik
+          enableReinitialize
           initialValues={initialValues}
-          validationSchema={validationSchema}
+          validationSchema={UserValidation}
           onSubmit={handleSubmit}
         >
           {({ values, errors, touched, setFieldValue, setFieldTouched }) => (
@@ -83,7 +74,7 @@ export default function CreateNewUserForm() {
               <FormEditField label="Email" name="email" />
 
               {/* ROLE */}
-              <FormListField label="Role" name="role" options={roles} />
+              <FormListField label="Role" name="role" options={roleOptions} />
 
               {/* PASSWORD */}
               <div className="flex flex-col">
@@ -92,7 +83,7 @@ export default function CreateNewUserForm() {
                   onChange={(val) => setFieldValue("password", val)}
                   onBlur={() => setFieldTouched("password", true)}
                   labelClassName="text-black"
-                  inputClassName="border border-black p-2 rounded w-full pr-10"
+                  inputClassName="border border-black p-2 rounded w-full pr-10 text-black"
                 />
                 {touched.password && errors.password && (
                   <span className="text-red-500 text-sm">
@@ -110,7 +101,7 @@ export default function CreateNewUserForm() {
                   label="Confirm Password"
                   placeholder="confirm password"
                   labelClassName="text-black"
-                  inputClassName="border border-black p-2 rounded w-full pr-10"
+                  inputClassName="border border-black p-2 rounded w-full pr-10 text-black"
                 />
                 {touched.confirmPassword && errors.confirmPassword && (
                   <span className="text-red-500 text-sm">

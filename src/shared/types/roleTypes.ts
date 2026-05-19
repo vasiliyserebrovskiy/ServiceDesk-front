@@ -16,3 +16,9 @@ export type RoleDTO = {
   description: string;
   default_role: boolean;
 };
+
+export const roleLabels: Record<string, string> = {
+  USER: "User",
+  MANAGER: "Manager",
+  ADMIN: "Administrator",
+};
