@@ -20,7 +20,9 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const handleLogin = async () => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     try {
       setError(null);
 
@@ -41,7 +43,7 @@ export default function LoginPage() {
         const status = e.response?.status;
 
         /**
-         *  IMPORTANT:
+         * IMPORTANT:
          * 403 auth state errors must NOT be shown here
          * (they are handled by global toast)
          */
@@ -50,7 +52,7 @@ export default function LoginPage() {
             message.includes("not active") || message.includes("locked");
 
           if (isAuthStateError) {
-            return; // ignore here
+            return;
           }
         }
 
@@ -63,7 +65,10 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#0d2b5c]">
-      <div className="bg-white flex flex-col gap-4 p-6 rounded-2xl shadow-md w-full max-w-md">
+      <form
+        onSubmit={handleLogin}
+        className="bg-white flex flex-col gap-4 p-6 rounded-2xl shadow-md w-full max-w-md"
+      >
         <h2 className="text-xl font-semibold text-center">Service Desk</h2>
 
         {error && (
@@ -75,12 +80,12 @@ export default function LoginPage() {
         <PasswordField value={password} onChange={setPassword} />
 
         <button
+          type="submit"
           className="bg-blue-700 text-white p-2 rounded hover:bg-blue-900 transition"
-          onClick={handleLogin}
         >
           Log in
         </button>
-      </div>
+      </form>
     </div>
   );
 }
