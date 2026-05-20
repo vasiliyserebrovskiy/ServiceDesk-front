@@ -38,7 +38,7 @@ export default function UserMenuSection({ closeAll }: Props) {
             // close the menu after selecting
             onClick={closeAll}
           >
-            All Users List
+            Users List
           </NavLink>
         </div>
       )}

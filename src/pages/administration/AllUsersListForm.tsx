@@ -4,6 +4,7 @@ import { useUsers } from "../../shared/hooks/useUsers";
 import { DataTable } from "../../components/tables/DataTable";
 import { userColumns } from "../../features/users/userColumns";
 import type { User } from "../../shared/types/usersTypes";
+import { roleLabels } from "../../shared/types/roleTypes";
 
 export default function AllUsersListForm() {
   const { users, loading, loadUsers } = useUsers();
@@ -22,10 +23,12 @@ export default function AllUsersListForm() {
 
     return users.map((user: User) => {
       const role = roles.find((r) => r.id === user.roleId);
+      const name = user.firstname + " " + user.lastname;
 
       return {
         ...user,
-        roleName: role ? role.name : "Unknown",
+        roleName: role ? roleLabels[role.name] : "Unknown",
+        name: name,
       };
     });
   }, [users, roles]);
@@ -36,10 +39,11 @@ export default function AllUsersListForm() {
   }
 
   return (
-    <div>
-      <h2>All Users</h2>
-
-      <DataTable data={enrichedUsers} columns={userColumns} />
+    <div className="flex flex-col min-h-screen px-6 bg-gray-50">
+      <h2 className="text-gray-500">All Users</h2>
+      <div className="flex">
+        <DataTable data={enrichedUsers} columns={userColumns} />
+      </div>
     </div>
   );
 }

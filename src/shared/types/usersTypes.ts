@@ -56,7 +56,9 @@ export type UserFormValues = {
 };
 
 export type UsersList = {
-  firstname: string;
+  name: string;
   email: string;
   roleName: string;
+  isActive: boolean;
+  isBlocked: boolean;
 };

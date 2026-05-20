@@ -30,7 +30,7 @@ export default function RoleMenuSection({ closeAll }: Props) {
             // close the menu after selecting
             onClick={closeAll}
           >
-            Role List
+            Roles List
           </NavLink>
         </div>
       )}
