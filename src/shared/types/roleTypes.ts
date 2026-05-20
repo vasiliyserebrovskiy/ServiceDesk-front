@@ -6,7 +6,7 @@ export interface Role {
 }
 
 export interface RoleState {
-  roles: Role[] | null;
+  roles: Role[];
   isLoading: boolean;
 }
 

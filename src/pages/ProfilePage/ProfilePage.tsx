@@ -2,7 +2,6 @@ import { useAppSelector } from "../../app/hooks";
 import { useRoles } from "../../shared/hooks/useRoles";
 import { roleLabels } from "../../shared/types/roleTypes";
 import { getRoleName } from "../../shared/utils/getRoleName";
-// import { formatRole } from "../../shared/utils/roleFormatter";
 
 export default function ProfilePage() {
   const { user } = useAppSelector((state) => state.auth);

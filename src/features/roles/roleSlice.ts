@@ -4,7 +4,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../app/store";
 
 const initialState: RoleState = {
-  roles: null,
+  roles: [],
   isLoading: false,
 };
 
@@ -17,7 +17,7 @@ const authSlice = createSlice({
     },
 
     clearRoles: (state) => {
-      state.roles = null;
+      state.roles = [];
     },
 
     setLoading: (state, action: PayloadAction<boolean>) => {

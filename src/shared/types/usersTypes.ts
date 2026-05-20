@@ -54,3 +54,9 @@ export type UserFormValues = {
   description: string;
   avatarUrl: string;
 };
+
+export type UsersList = {
+  firstname: string;
+  email: string;
+  roleName: string;
+};
