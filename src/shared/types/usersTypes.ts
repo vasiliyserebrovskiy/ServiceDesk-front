@@ -1,15 +1,25 @@
-import type { Role } from "./roleTypes";
-
 export interface User {
   id: string;
   firstname: string;
   lastname: string;
   email: string;
-  role: Role;
-  active: boolean;
-  block: boolean;
+  roleId: string;
+  isActive: boolean;
+  isBlocked: boolean;
   description: string;
   avatarUrl: string;
+}
+
+export interface UserDto {
+  id: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  role_id: string;
+  is_active: boolean;
+  is_blocked: boolean;
+  description: string;
+  avatar_url: string;
 }
 
 export type CreateUserDto = {

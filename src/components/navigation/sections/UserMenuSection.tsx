@@ -32,6 +32,14 @@ export default function UserMenuSection({ closeAll }: Props) {
           >
             Create New User
           </NavLink>
+          <NavLink
+            to="/admin/users"
+            className="hover:text-blue-600"
+            // close the menu after selecting
+            onClick={closeAll}
+          >
+            All Users List
+          </NavLink>
         </div>
       )}
     </div>

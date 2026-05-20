@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
-
 import { useAppSelector } from "../app/hooks";
+import { useRoles } from "../shared/hooks/useRoles";
 
 export default function AdminRoute({
   children,
@@ -8,16 +8,15 @@ export default function AdminRoute({
   children: React.ReactNode;
 }) {
   const { user, isLoading } = useAppSelector((state) => state.auth);
+  const { roles, isLoading: rolesLoading } = useRoles();
 
-  // if we are loading auth
-
-  if (isLoading) {
+  if (isLoading || rolesLoading) {
     return <div>Loading...</div>;
   }
 
-  // if user is not ADMIN
+  const role = roles?.find((r) => r.id === user?.roleId);
 
-  if (user?.role !== "ADMIN") {
+  if (role?.name !== "ADMIN") {
     return <Navigate to="/" replace />;
   }
 

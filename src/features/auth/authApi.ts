@@ -1,4 +1,5 @@
 import { api } from "../../api/axios";
+import { mapUser } from "../../shared/mappers/userMapper";
 
 export const loginRequest = async (email: string, password: string) => {
   await api.post(
@@ -17,7 +18,7 @@ export const loginRequest = async (email: string, password: string) => {
 
 export const meRequest = async () => {
   const { data } = await api.get("/v1/users/me");
-  return data;
+  return mapUser(data);
 };
 
 export const logoutRequest = async () => {

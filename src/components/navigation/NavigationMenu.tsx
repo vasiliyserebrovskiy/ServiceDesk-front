@@ -4,9 +4,13 @@ import AllMenu from "./AllMenu";
 import AdminMenu from "./AdminMenu";
 
 import { useAppSelector } from "../../app/hooks";
+import { useRoles } from "../../shared/hooks/useRoles";
 
 export default function NavigationMenu() {
   const { user } = useAppSelector((state) => state.auth);
+  const { roles } = useRoles();
+
+  const roleName = roles?.find((r) => r.id === user?.roleId)?.name;
 
   return (
     <nav className="flex gap-4 items-center">
@@ -16,11 +20,11 @@ export default function NavigationMenu() {
 
       <AllMenu />
 
-      {user?.role === "ADMIN" && <AdminMenu />}
+      {roleName === "ADMIN" && <AdminMenu />}
 
       <NavLink
         to="/profile"
-        className="text-white selectnone hover:text-blue-600"
+        className="text-white select-none hover:text-blue-600"
       >
         Profile
       </NavLink>
