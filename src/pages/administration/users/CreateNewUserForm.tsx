@@ -8,10 +8,12 @@ import FormListField from "../../../components/form/FormListField";
 import FormDescField from "../../../components/form/FormDescField";
 import { useRoles } from "../../../shared/hooks/useRoles";
 import { UserValidation } from "../../../shared/validation/userValidation";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateNewUserForm() {
   const { createUser } = useUsers();
   const { roles, isLoading } = useRoles();
+  const navigate = useNavigate();
 
   if (isLoading) {
     return <div>Loading roles...</div>;
@@ -47,12 +49,17 @@ export default function CreateNewUserForm() {
       description: values.description,
       avatarUrl: values.avatarUrl,
     };
-    await createUser(payload);
-    resetForm();
+    try {
+      await createUser(payload);
+      resetForm();
+      navigate("/admin/users");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <div className="flex justify-center bg-gray-50">
+    <div className="min-h-screen flex justify-center bg-gray-50">
       <div className="w-full max-w-3xl p-6">
         <h2 className="text-gray-500 text-center">Create New User</h2>
         <Formik
