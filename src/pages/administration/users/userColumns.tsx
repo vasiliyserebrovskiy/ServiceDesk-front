@@ -1,4 +1,4 @@
-import type { UsersList } from "../../shared/types/usersTypes";
+import type { UsersList } from "../../../shared/types/usersTypes";
 
 export const userColumns = [
   {

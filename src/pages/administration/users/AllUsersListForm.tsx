@@ -1,10 +1,9 @@
 import { useEffect, useMemo } from "react";
-import { useRoles } from "../../shared/hooks/useRoles";
-import { useUsers } from "../../shared/hooks/useUsers";
-import { DataTable } from "../../components/tables/DataTable";
-import { userColumns } from "../../features/users/userColumns";
-import type { User } from "../../shared/types/usersTypes";
-import { roleLabels } from "../../shared/types/roleTypes";
+import { useRoles } from "../../../shared/hooks/useRoles";
+import { useUsers } from "../../../shared/hooks/useUsers";
+import { DataTable } from "../../../components/tables/DataTable";
+import { userColumns } from "./userColumns";
+import type { User } from "../../../shared/types/usersTypes";
 
 export default function AllUsersListForm() {
   const { users, loading, loadUsers } = useUsers();
@@ -27,7 +26,7 @@ export default function AllUsersListForm() {
 
       return {
         ...user,
-        roleName: role ? roleLabels[role.name] : "Unknown",
+        roleName: role ? role.displayName : "Unknown",
         name: name,
       };
     });

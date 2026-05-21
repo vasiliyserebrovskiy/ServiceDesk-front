@@ -1,13 +1,12 @@
 import { useAppSelector } from "../../app/hooks";
 import { useRoles } from "../../shared/hooks/useRoles";
-import { roleLabels } from "../../shared/types/roleTypes";
-import { getRoleName } from "../../shared/utils/getRoleName";
+import { getRoleDisplayName } from "../../shared/utils/getRoleDisplayName";
 
 export default function ProfilePage() {
   const { user } = useAppSelector((state) => state.auth);
   const { roles, isLoading } = useRoles();
 
-  const roleName = getRoleName(user?.roleId, roles ?? []);
+  const roleDisplayName = getRoleDisplayName(user?.roleId, roles ?? []);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -36,7 +35,7 @@ export default function ProfilePage() {
 
         <div className="flex gap-5 justify-between text-black px-20 mt-3">
           <p>Role:</p>
-          <p>{roleLabels[roleName] || roleName}</p>
+          <p>{roleDisplayName}</p>
         </div>
 
         <div className="flex flex-col gap-5 items-center text-black px-10 mt-5">

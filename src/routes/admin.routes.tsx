@@ -1,6 +1,6 @@
-import AllUsersListForm from "../pages/administration/AllUsersListForm";
-import CreateNewUser from "../pages/administration/CreateNewUserForm";
-import { RolesList } from "../pages/roles/RoleList";
+import AllUsersListForm from "../pages/administration/users/AllUsersListForm";
+import CreateNewUser from "../pages/administration/users/CreateNewUserForm";
+import { RolesList } from "../pages/administration/roles/RoleList";
 import AdminRoute from "./AdminRoute";
 
 export const adminRoutes = [

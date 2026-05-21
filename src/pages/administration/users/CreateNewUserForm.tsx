@@ -1,14 +1,13 @@
 import { Formik, Form } from "formik";
 import type { FormikHelpers } from "formik";
-import PasswordField from "../../components/form/PasswordField";
-import { useUsers } from "../../shared/hooks/useUsers";
-import type { UserFormValues } from "../../shared/types/usersTypes";
-import FormEditField from "../../components/form/FormEditField";
-import FormListField from "../../components/form/FormListField";
-import FormDescField from "../../components/form/FormDescField";
-import { useRoles } from "../../shared/hooks/useRoles";
-import { UserValidation } from "../../shared/validation/userValidation";
-import { roleLabels } from "../../shared/types/roleTypes";
+import PasswordField from "../../../components/form/PasswordField";
+import { useUsers } from "../../../shared/hooks/useUsers";
+import type { UserFormValues } from "../../../shared/types/usersTypes";
+import FormEditField from "../../../components/form/FormEditField";
+import FormListField from "../../../components/form/FormListField";
+import FormDescField from "../../../components/form/FormDescField";
+import { useRoles } from "../../../shared/hooks/useRoles";
+import { UserValidation } from "../../../shared/validation/userValidation";
 
 export default function CreateNewUserForm() {
   const { createUser } = useUsers();
@@ -21,7 +20,7 @@ export default function CreateNewUserForm() {
   const roleOptions =
     roles?.map((role) => ({
       value: role.name,
-      label: roleLabels[role.name] || role.name,
+      label: role.displayName,
     })) || [];
 
   const initialValues: UserFormValues = {

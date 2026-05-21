@@ -1,14 +1,18 @@
 // api/usersApi.ts
 import { api } from "../../api/axios";
 import { mapUser } from "../../shared/mappers/userMapper";
-import type { CreateUserDto, User } from "../../shared/types/usersTypes";
+import type {
+  CreateUserDto,
+  User,
+  UserDto,
+} from "../../shared/types/usersTypes";
 
 export const fetchUsers = async (): Promise<User[]> => {
-  const res = await api.get("/v1/users");
-  return res.data.map(mapUser);
+  const { data } = await api.get<UserDto[]>("/v1/users");
+  return data.map(mapUser);
 };
 
 export const createNewUser = async (newUser: CreateUserDto): Promise<User> => {
-  const res = await api.post("/v1/users/create", newUser);
-  return res.data;
+  const { data } = await api.post<UserDto>("/v1/users/create", newUser);
+  return mapUser(data);
 };

@@ -1,13 +1,10 @@
-import type { Column } from "../../components/tables/DataTable";
-import type { Role } from "../../shared/types/roleTypes";
-import { roleLabels } from "../../shared/types/roleTypes";
+import type { Column } from "../../../components/tables/DataTable";
+import type { Role } from "../../../shared/types/roleTypes";
 
 export const roleColumns: Column<Role>[] = [
   {
     title: "Name",
-    render: (role) => (
-      <span className="text-gray-800">{roleLabels[role.name]}</span>
-    ),
+    render: (role) => <span className="text-gray-800">{role.displayName}</span>,
   },
 
   {
