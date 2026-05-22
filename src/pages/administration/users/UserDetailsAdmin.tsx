@@ -53,7 +53,7 @@ export default function EditUserForm() {
     return () => {
       cancelled = true;
     };
-  }, [id]);
+  }, [id, users, getUserById]);
 
   // loading state
   if (!user || isLoading) {
@@ -162,7 +162,11 @@ export default function EditUserForm() {
               <div className="col-span-2 flex justify-center mt-4">
                 <button
                   type="submit"
-                  className="bg-blue-600 text-white px-6 py-2 rounded"
+                  className="bg-blue-600 text-white px-6 py-2 rounded
+             cursor-pointer
+             hover:bg-blue-700
+             active:scale-95
+             transition duration-150"
                 >
                   Save user
                 </button>
