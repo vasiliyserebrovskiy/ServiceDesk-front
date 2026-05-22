@@ -1,7 +1,8 @@
-import AllUsersListForm from "../pages/administration/users/AllUsersListForm";
+import AllUsersListFormAdmin from "../pages/administration/users/AllUsersListFormAdmin";
 import CreateNewUser from "../pages/administration/users/CreateNewUserForm";
 import { RolesList } from "../pages/administration/roles/RoleList";
 import AdminRoute from "./AdminRoute";
+import UserDetailsAdmin from "../pages/administration/users/UserDetailsAdmin";
 
 export const adminRoutes = [
   {
@@ -24,7 +25,15 @@ export const adminRoutes = [
     path: "admin/users",
     element: (
       <AdminRoute>
-        <AllUsersListForm />
+        <AllUsersListFormAdmin />
+      </AdminRoute>
+    ),
+  },
+  {
+    path: "admin/users/:id",
+    element: (
+      <AdminRoute>
+        <UserDetailsAdmin />
       </AdminRoute>
     ),
   },

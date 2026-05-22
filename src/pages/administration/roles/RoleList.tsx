@@ -17,7 +17,11 @@ export const RolesList = () => {
     <div className="flex flex-col min-h-screen px-6 bg-gray-50">
       <h2 className="text-gray-500">Roles List</h2>
 
-      <DataTable data={roles} columns={roleColumns} />
+      <DataTable
+        data={roles}
+        columns={roleColumns}
+        getRowId={(roles) => roles.id}
+      />
     </div>
   );
 };

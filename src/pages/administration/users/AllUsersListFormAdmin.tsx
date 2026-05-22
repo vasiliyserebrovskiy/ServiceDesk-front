@@ -5,7 +5,7 @@ import { DataTable } from "../../../components/tables/DataTable";
 import { userColumns } from "./userColumns";
 import type { User } from "../../../shared/types/usersTypes";
 
-export default function AllUsersListForm() {
+export default function AllUsersListFormAdmin() {
   const { users, loading, loadUsers } = useUsers();
   const { roles, isLoading } = useRoles();
 
@@ -41,7 +41,12 @@ export default function AllUsersListForm() {
     <div className="flex flex-col min-h-screen px-6 bg-gray-50">
       <h2 className="text-gray-500">All Users</h2>
       <div className="flex">
-        <DataTable data={enrichedUsers} columns={userColumns} />
+        <DataTable
+          data={enrichedUsers}
+          columns={userColumns}
+          getRowId={(enrichedUsers) => enrichedUsers.id}
+          getDetailsLink={(enrichedUser) => `/admin/users/${enrichedUser.id}`}
+        />
       </div>
     </div>
   );

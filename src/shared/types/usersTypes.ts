@@ -62,3 +62,14 @@ export type UsersList = {
   isActive: boolean;
   isBlocked: boolean;
 };
+
+export type UpdateUserDto = {
+  firstname: string;
+  lastname: string;
+  email: string;
+  roleId: string;
+  isActive: boolean;
+  isBlocked: boolean;
+  description: string;
+  avatarUrl: string;
+};

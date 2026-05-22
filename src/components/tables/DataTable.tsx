@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export type Column<T> = {
   title: string;
@@ -7,10 +8,26 @@ export type Column<T> = {
 
 type DataTableProps<T> = {
   data: T[];
+
   columns: Column<T>[];
+
+  /**
+   * Unique row key
+   */
+  getRowId: (item: T) => string | number;
+
+  /**
+   * Optional details page link
+   */
+  getDetailsLink?: (item: T) => string;
 };
 
-export function DataTable<T>({ data, columns }: DataTableProps<T>) {
+export function DataTable<T>({
+  data,
+  columns,
+  getRowId,
+  getDetailsLink,
+}: DataTableProps<T>) {
   return (
     <div className="flex flex-col h-full w-full bg-white rounded-xl shadow">
       {!data.length ? (
@@ -20,12 +37,12 @@ export function DataTable<T>({ data, columns }: DataTableProps<T>) {
       ) : (
         <div className="overflow-auto">
           <table className="w-full border-collapse">
-            <thead className="bg-gray-100">
+            <thead className="bg-gray-300">
               <tr>
                 {columns.map((col, idx) => (
                   <th
                     key={idx}
-                    className="text-left px-4 py-3 text-sm font-semibold text-gray-700"
+                    className="text-left px-3 py-2 text-sm font-semibold text-gray-700"
                   >
                     {col.title}
                   </th>
@@ -34,19 +51,32 @@ export function DataTable<T>({ data, columns }: DataTableProps<T>) {
             </thead>
 
             <tbody>
-              {data.map((item, rowIdx) => (
+              {data.map((item) => (
                 <tr
-                  key={rowIdx}
-                  className="border-t border-gray-200 hover:bg-gray-50 transition-colors"
+                  key={getRowId(item)}
+                  className="border-t border-gray-200 hover:bg-blue-100 transition-colors"
                 >
-                  {columns.map((col, colIdx) => (
-                    <td
-                      key={colIdx}
-                      className="px-4 py-3 text-sm text-gray-800"
-                    >
-                      {col.render(item)}
-                    </td>
-                  ))}
+                  {columns.map((col, colIdx) => {
+                    const content = col.render(item);
+
+                    return (
+                      <td
+                        key={colIdx}
+                        className="px-3 py-1 text-sm text-gray-800"
+                      >
+                        {colIdx === 0 && getDetailsLink ? (
+                          <Link
+                            to={getDetailsLink(item)}
+                            className="block hover:bg-blue-200 rounded px-1 py-1 text-blue-900"
+                          >
+                            {content}
+                          </Link>
+                        ) : (
+                          content
+                        )}
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
@@ -56,41 +86,3 @@ export function DataTable<T>({ data, columns }: DataTableProps<T>) {
     </div>
   );
 }
-
-// export function DataTable<T>({ data, columns }: DataTableProps<T>) {
-//   return (
-//     <div className="flex flex-col h-full w-full bg-white rounded-xl shadow">
-//       <div className="overflow-auto">
-//         <table className="w-full border-collapse">
-//           <thead className="bg-gray-100">
-//             <tr>
-//               {columns.map((col, idx) => (
-//                 <th
-//                   key={idx}
-//                   className="text-left px-4 py-3 text-sm font-semibold text-gray-700"
-//                 >
-//                   {col.title}
-//                 </th>
-//               ))}
-//             </tr>
-//           </thead>
-
-//           <tbody>
-//             {data.map((item, rowIdx) => (
-//               <tr
-//                 key={rowIdx}
-//                 className="border-t border-gray-200 hover:bg-gray-50 transition-colors"
-//               >
-//                 {columns.map((col, colIdx) => (
-//                   <td key={colIdx} className="px-4 py-3 text-sm text-gray-800">
-//                     {col.render(item)}
-//                   </td>
-//                 ))}
-//               </tr>
-//             ))}
-//           </tbody>
-//         </table>
-//       </div>
-//     </div>
-//   );
-// }
