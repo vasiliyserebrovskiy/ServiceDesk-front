@@ -29,7 +29,7 @@ export function DataTable<T>({
   getDetailsLink,
 }: DataTableProps<T>) {
   return (
-    <div className="flex flex-col h-full w-full bg-white rounded-xl shadow">
+    <div className="flex flex-col h-full w-full bg-white rounded-xl shadow overflow-hidden">
       {!data.length ? (
         <div className="flex items-center justify-center flex-1 p-8 text-gray-500">
           No data available
