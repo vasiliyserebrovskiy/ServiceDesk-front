@@ -1,5 +1,5 @@
 import type { Column } from "../../../components/tables/DataTable";
-import type { Role } from "../../../shared/types/roleTypes";
+import type { Role } from "../../../shared/types/rolesTypes";
 
 export const roleColumns: Column<Role>[] = [
   {

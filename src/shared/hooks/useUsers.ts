@@ -35,7 +35,7 @@ export const useUsers = () => {
     [dispatch],
   );
   /**
-   * Get user bu id
+   * Get user by id
    */
   const getUserById = useCallback(
     async (id: string) => {
@@ -43,6 +43,7 @@ export const useUsers = () => {
     },
     [dispatch],
   );
+
   /**
    * Update user by id
    */

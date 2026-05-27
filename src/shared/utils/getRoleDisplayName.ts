@@ -1,4 +1,4 @@
-import type { Role } from "../types/roleTypes";
+import type { Role } from "../types/rolesTypes";
 
 export function getRoleDisplayName(
   roleId: string | undefined,
