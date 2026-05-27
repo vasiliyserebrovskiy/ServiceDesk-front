@@ -3,6 +3,7 @@ import authReducer from "../features/auth/authSlice";
 import errorReducer from "../features/error/errorSlice";
 import roleReducer from "../features/roles/roleSlice";
 import usersReducer from "../features/users/usersSlice";
+import groupsReducer from "../features/groups/groupsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     error: errorReducer,
     roles: roleReducer,
     users: usersReducer,
+    groups: groupsReducer,
   },
 });
 

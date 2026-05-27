@@ -102,6 +102,7 @@ const usersSlice = createSlice({
       state.loading = false;
       state.error = action.error.message ?? "Failed to fetch user";
     });
+
     /**
      * UPDATE USER BY ID
      */
