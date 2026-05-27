@@ -10,18 +10,6 @@ export interface User {
   avatarUrl: string;
 }
 
-export interface UserDto {
-  id: string;
-  firstname: string;
-  lastname: string;
-  email: string;
-  role_id: string;
-  is_active: boolean;
-  is_blocked: boolean;
-  description: string;
-  avatar_url: string;
-}
-
 export type CreateUserDto = {
   firstname: string;
   lastname: string;
