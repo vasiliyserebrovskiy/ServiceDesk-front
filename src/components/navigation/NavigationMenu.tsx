@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
 
-import AllMenu from "./AllMenu";
+import TicketsMenu from "./TicketsMenu";
 import AdminMenu from "./AdminMenu";
 
 import { useAppSelector } from "../../app/hooks";
 import { useRoles } from "../../shared/hooks/useRoles";
+import ManagementMenu from "./ManagementMenu";
 
 export default function NavigationMenu() {
   const { user } = useAppSelector((state) => state.auth);
@@ -18,7 +19,9 @@ export default function NavigationMenu() {
         Home
       </NavLink>
 
-      <AllMenu />
+      <TicketsMenu />
+
+      {(roleName === "ADMIN" || roleName === "MANAGER") && <ManagementMenu />}
 
       {roleName === "ADMIN" && <AdminMenu />}
 

@@ -10,6 +10,7 @@ import MainLayout from "../layouts/MainLayout";
 import { incidentRoutes } from "./incidents.routes";
 import { problemRoutes } from "./problems.routes";
 import { adminRoutes } from "./admin.routes";
+import { managementRoutes } from "./management.routes";
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +40,7 @@ export const router = createBrowserRouter([
       ...incidentRoutes,
       ...problemRoutes,
       ...adminRoutes,
+      ...managementRoutes,
     ],
   },
 ]);

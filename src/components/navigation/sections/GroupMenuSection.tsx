@@ -5,7 +5,7 @@ type Props = {
   closeAll: () => void;
 };
 
-export default function IncidentMenuSection({ closeAll }: Props) {
+export default function GroupMenuSection({ closeAll }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -19,33 +19,25 @@ export default function IncidentMenuSection({ closeAll }: Props) {
           hover:text-blue-600
         "
       >
-        Incident
+        Groups
       </button>
 
       {isOpen && (
         <div className="ml-4 mt-2 flex flex-col gap-1">
           <NavLink
-            to="/incidents/create"
+            to="/groups/create"
             onClick={closeAll}
             className="hover:text-blue-600"
           >
-            Create New
+            Create New Group
           </NavLink>
 
           <NavLink
-            to="/incidents/open"
+            to="/groups/all"
             onClick={closeAll}
             className="hover:text-blue-600"
           >
-            Open
-          </NavLink>
-
-          <NavLink
-            to="/incidents/closed"
-            onClick={closeAll}
-            className="hover:text-blue-600"
-          >
-            Closed
+            Groups List
           </NavLink>
         </div>
       )}

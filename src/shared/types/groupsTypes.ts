@@ -28,3 +28,14 @@ export const initialState: GroupState = {
   loading: false,
   error: null,
 };
+
+export type GroupFormValues = {
+  name: string;
+  description: string;
+  userIds: string[];
+};
+
+export type GroupList = {
+  name: string;
+  description: string;
+};

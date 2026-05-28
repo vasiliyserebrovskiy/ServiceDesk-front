@@ -10,7 +10,7 @@ import FormDescField from "../../../components/form/FormDescField";
 import type { User } from "../../../shared/types/usersTypes";
 import { updateUserValidation } from "../../../shared/validation/updateUserValidation";
 
-export default function EditUserForm() {
+export default function UserDetailsAdmin() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { users, getUserById, updateUser } = useUsers();
@@ -55,7 +55,11 @@ export default function EditUserForm() {
     };
   }, [id, users, getUserById]);
 
-  // loading state
+  if (!id) {
+    return <div>Invalid user id</div>;
+  }
+
+  // 2. loading state
   if (!user || isLoading) {
     return <div>Loading user...</div>;
   }
@@ -75,8 +79,6 @@ export default function EditUserForm() {
     values: typeof initialValues,
     { resetForm }: FormikHelpers<typeof initialValues>,
   ) => {
-    if (!id) return;
-
     const payload = {
       firstname: values.firstname,
       lastname: values.lastname,
