@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
-import IncidentMenuSection from "./sections/IncidentMenuSection";
-import ProblemMenuSection from "./sections/ProblemMenuSection";
+import IncidentsMenuSection from "./sections/IncidentsMenuSection";
+// import ProblemsMenuSection from "./sections/ProblemsMenuSection";
 
-export default function AllMenu() {
+export default function TicketsMenu() {
   const [isOpen, setIsOpen] = useState(false);
 
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -40,7 +40,7 @@ export default function AllMenu() {
           hover:text-blue-600
         "
       >
-        All
+        Tickets
       </button>
 
       {/* DROPDOWN */}
@@ -60,9 +60,9 @@ export default function AllMenu() {
             z-50
           "
         >
-          <IncidentMenuSection closeAll={closeAll} />
+          <IncidentsMenuSection closeAll={closeAll} />
 
-          <ProblemMenuSection closeAll={closeAll} />
+          {/* <ProblemsMenuSection closeAll={closeAll} /> */}
         </div>
       )}
     </div>

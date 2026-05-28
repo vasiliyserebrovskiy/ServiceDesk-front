@@ -1,6 +1,6 @@
-import OpenIncidentsPage from "../pages/incidents/OpenIncidentsPage";
-import CreateIncidentPage from "../pages/incidents/CreateIncidentPage";
-import ClosedIncidentsPage from "../pages/incidents/ClosedIncidentsPage";
+import OpenIncidentsPage from "../pages/tickets/incidents/OpenIncidentsPage";
+import CreateIncidentPage from "../pages/tickets/incidents/CreateIncidentPage";
+import ClosedIncidentsPage from "../pages/tickets/incidents/ClosedIncidentsPage";
 
 export const incidentRoutes = [
   {

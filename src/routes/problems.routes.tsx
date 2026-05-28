@@ -1,6 +1,6 @@
-import OpenProblemsPage from "../pages/problems/OpenProblemsPage";
-import CreateProblemPage from "../pages/problems/CreateProblemPage";
-import ClosedProblemsPage from "../pages/problems/ClosedProblemsPage";
+import OpenProblemsPage from "../pages/tickets/problems/OpenProblemsPage";
+import CreateProblemPage from "../pages/tickets/problems/CreateProblemPage";
+import ClosedProblemsPage from "../pages/tickets/problems/ClosedProblemsPage";
 
 export const problemRoutes = [
   {
