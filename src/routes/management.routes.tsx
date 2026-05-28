@@ -1,5 +1,6 @@
 import AllGroupsListForm from "../pages/management/groups/AllGroupsListForm";
 import CreateGroupPage from "../pages/management/groups/CreateGroupPage";
+import GroupDetails from "../pages/management/groups/GroupDetails";
 import ManagementRoute from "./ManagementRoute";
 
 export const managementRoutes = [
@@ -16,6 +17,14 @@ export const managementRoutes = [
     element: (
       <ManagementRoute>
         <AllGroupsListForm />
+      </ManagementRoute>
+    ),
+  },
+  {
+    path: "/groups/:id",
+    element: (
+      <ManagementRoute>
+        <GroupDetails />
       </ManagementRoute>
     ),
   },

@@ -1,20 +1,60 @@
 import { useGroups } from "../../../shared/hooks/useGroups";
-import { useNavigate } from "react-router-dom";
-import type { GroupFormValues } from "../../../shared/types/groupsTypes";
+import { useNavigate, useParams } from "react-router-dom";
+import type { Group, GroupFormValues } from "../../../shared/types/groupsTypes";
 import { Form, Formik, type FormikHelpers } from "formik";
 import { GroupValidation } from "../../../shared/validation/groupValidation";
 import FormEditField from "../../../components/form/FormEditField";
 import FormDescField from "../../../components/form/FormDescField";
+import { useEffect, useState } from "react";
 
-export default function CreateGroupPage() {
-  const { createGroup } = useGroups();
+export default function GroupDetails() {
+  const { id } = useParams();
+  const { groups, getGroupById, updateGroupById } = useGroups();
   const navigate = useNavigate();
+  const [group, setGroup] = useState<Group | null>(null);
+
+  // 1. try get from store
+  useEffect(() => {
+    if (!id) return;
+
+    const groupFromStore = groups.find((g) => g.id === id);
+
+    let cancelled = false;
+
+    const load = async () => {
+      if (groupFromStore) {
+        setGroup(groupFromStore);
+        return;
+      }
+      const data = await getGroupById(id);
+
+      if (!cancelled) {
+        setGroup(data);
+      }
+    };
+
+    load();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [id, groups, getGroupById]);
+
+  if (!id) {
+    return <div>Invalid group id</div>;
+  }
+
+  // 2. loading state
+  if (!group) {
+    return <div>Loading group...</div>;
+  }
 
   const initialValues: GroupFormValues = {
-    name: "",
-    description: "",
+    name: group.name,
+    description: group.description,
     userIds: [],
   };
+
   //TODO: user ids must not be null
   const handleSubmit = async (
     values: GroupFormValues,
@@ -26,7 +66,7 @@ export default function CreateGroupPage() {
       userIds: [],
     };
     try {
-      await createGroup(payload);
+      await updateGroupById(id, payload);
       resetForm();
       navigate("/groups/all");
     } catch (error) {
@@ -62,7 +102,7 @@ export default function CreateGroupPage() {
              active:scale-95
              transition duration-150"
                 >
-                  Create group
+                  Update group
                 </button>
               </div>
             </Form>
