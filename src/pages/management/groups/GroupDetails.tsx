@@ -1,19 +1,34 @@
-import { useGroups } from "../../../shared/hooks/useGroups";
-import { useNavigate, useParams } from "react-router-dom";
-import type { Group, GroupFormValues } from "../../../shared/types/groupsTypes";
+import { useEffect, useState } from "react";
 import { Form, Formik, type FormikHelpers } from "formik";
+import { useNavigate, useParams } from "react-router-dom";
+
+import { useGroups } from "../../../shared/hooks/useGroups";
+import { useUsers } from "../../../shared/hooks/useUsers";
+
+import type { Group, GroupFormValues } from "../../../shared/types/groupsTypes";
+
+import type { User } from "../../../shared/types/usersTypes";
+
 import { GroupValidation } from "../../../shared/validation/groupValidation";
+
 import FormEditField from "../../../components/form/FormEditField";
 import FormDescField from "../../../components/form/FormDescField";
-import { useEffect, useState } from "react";
+
+import TableSection from "../../../components/tables/TableSection";
+import UsersTransferModal from "../../../components/modals/UsersTransferModal";
 
 export default function GroupDetails() {
   const { id } = useParams();
   const { groups, getGroupById, updateGroupById } = useGroups();
+  const { users, loadUsers, getUserById } = useUsers();
   const navigate = useNavigate();
   const [group, setGroup] = useState<Group | null>(null);
+  const [groupUsers, setGroupUsers] = useState<User[]>([]);
+  const [openUsersModal, setOpenUsersModal] = useState(false);
 
-  // 1. try get from store
+  /**
+   * LOAD GROUP
+   */
   useEffect(() => {
     if (!id) return;
 
@@ -22,14 +37,19 @@ export default function GroupDetails() {
     let cancelled = false;
 
     const load = async () => {
-      if (groupFromStore) {
-        setGroup(groupFromStore);
-        return;
-      }
-      const data = await getGroupById(id);
+      try {
+        if (groupFromStore) {
+          setGroup(groupFromStore);
+          return;
+        }
 
-      if (!cancelled) {
-        setGroup(data);
+        const data = await getGroupById(id);
+
+        if (!cancelled) {
+          setGroup(data);
+        }
+      } catch (error) {
+        console.log(error);
       }
     };
 
@@ -40,22 +60,58 @@ export default function GroupDetails() {
     };
   }, [id, groups, getGroupById]);
 
+  /**
+   * LOAD GROUP USERS
+   */
+  useEffect(() => {
+    const loadUsers = async () => {
+      if (!group) return;
+
+      try {
+        const users = await Promise.all(
+          group.userIds.map((userId) => getUserById(userId)),
+        );
+
+        setGroupUsers(users);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    loadUsers();
+  }, [group, getUserById]);
+
+  // need to check if users already loaded or not
+  useEffect(() => {
+    loadUsers();
+  }, [loadUsers]);
+
+  /**
+   * INVALID ID
+   */
   if (!id) {
     return <div>Invalid group id</div>;
   }
 
-  // 2. loading state
+  /**
+   * LOADING
+   */
   if (!group) {
     return <div>Loading group...</div>;
   }
 
+  /**
+   * FORMIK INITIAL VALUES
+   */
   const initialValues: GroupFormValues = {
     name: group.name,
     description: group.description,
-    userIds: [],
+    userIds: group.userIds || [],
   };
 
-  //TODO: user ids must not be null
+  /**
+   * SUBMIT
+   */
   const handleSubmit = async (
     values: GroupFormValues,
     { resetForm }: FormikHelpers<GroupFormValues>,
@@ -63,11 +119,16 @@ export default function GroupDetails() {
     const payload = {
       name: values.name,
       description: values.description,
-      userIds: [],
+
+      // IMPORTANT
+      userIds: groupUsers.map((user) => user.id),
     };
+
     try {
       await updateGroupById(id, payload);
+
       resetForm();
+
       navigate("/groups/all");
     } catch (error) {
       console.log(error);
@@ -76,8 +137,11 @@ export default function GroupDetails() {
 
   return (
     <div className="min-h-screen flex justify-center bg-gray-50">
-      <div className="w-full max-w-3xl p-6">
-        <h2 className="text-gray-500 text-center">Create New Group</h2>
+      <div className="w-full max-w-4xl p-6">
+        {/* TITLE */}
+        <h2 className="text-2xl font-semibold text-center mb-6">Edit Group</h2>
+
+        {/* FORM */}
         <Formik
           enableReinitialize
           initialValues={initialValues}
@@ -92,22 +156,64 @@ export default function GroupDetails() {
               {/* DESCRIPTION */}
               <FormDescField label="Description" name="description" />
 
+              {/* USERS TABLE */}
+              <TableSection
+                title="Group Members"
+                data={groupUsers}
+                columns={[
+                  {
+                    key: "firstname",
+                    title: "First Name",
+                  },
+                  {
+                    key: "lastname",
+                    title: "Last Name",
+                  },
+                  {
+                    key: "email",
+                    title: "Email",
+                  },
+                ]}
+                onEdit={() => setOpenUsersModal(true)}
+              />
+
               {/* SUBMIT */}
-              <div className="col-span-2 flex justify-center mt-4">
+              <div className="flex justify-center mt-6">
                 <button
                   type="submit"
-                  className="bg-blue-600 text-white px-6 py-2 rounded
-             cursor-pointer
-             hover:bg-blue-700
-             active:scale-95
-             transition duration-150"
+                  className="
+                    bg-blue-600
+                    text-white
+                    px-6
+                    py-2
+                    rounded
+                    cursor-pointer
+                    hover:bg-blue-700
+                    active:scale-95
+                    transition
+                    duration-150
+                  "
                 >
-                  Update group
+                  Update Group
                 </button>
               </div>
             </Form>
           )}
         </Formik>
+
+        {/* USERS MODAL */}
+        <UsersTransferModal
+          key={openUsersModal ? "open" : "closed"}
+          open={openUsersModal}
+          allUsers={users}
+          selectedUsers={groupUsers}
+          onClose={() => setOpenUsersModal(false)}
+          onSave={(users) => {
+            setGroupUsers(users);
+
+            setOpenUsersModal(false);
+          }}
+        />
       </div>
     </div>
   );
