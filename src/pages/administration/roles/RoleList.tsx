@@ -15,8 +15,9 @@ export const RolesList = () => {
 
   return (
     <div className="flex flex-col min-h-screen px-6 bg-gray-50">
-      <h2 className="text-gray-500">Roles List</h2>
-
+      <div className="flex items-center justify-between p-1.5">
+        <h2 className="text-gray-500">Roles List</h2>
+      </div>
       <DataTable
         data={roles}
         columns={roleColumns}
