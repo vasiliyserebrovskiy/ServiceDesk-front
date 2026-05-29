@@ -1,5 +1,5 @@
 import AllGroupsListForm from "../pages/management/groups/AllGroupsListForm";
-import CreateGroupPage from "../pages/management/groups/CreateGroupPage";
+import CreateGroupForm from "../pages/management/groups/CreateGroupForm";
 import GroupDetails from "../pages/management/groups/GroupDetails";
 import ManagementRoute from "./ManagementRoute";
 
@@ -8,7 +8,7 @@ export const managementRoutes = [
     path: "/groups/create",
     element: (
       <ManagementRoute>
-        <CreateGroupPage />
+        <CreateGroupForm />
       </ManagementRoute>
     ),
   },

@@ -1,5 +1,5 @@
 import AllUsersListFormAdmin from "../pages/administration/users/AllUsersListFormAdmin";
-import CreateNewUser from "../pages/administration/users/CreateNewUserForm";
+import CreateNewUser from "../pages/administration/users/CreateUserForm";
 import { RolesList } from "../pages/administration/roles/RoleList";
 import AdminRoute from "./AdminRoute";
 import UserDetailsAdmin from "../pages/administration/users/UserDetailsAdmin";

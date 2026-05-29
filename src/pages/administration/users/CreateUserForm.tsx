@@ -10,7 +10,7 @@ import { useRoles } from "../../../shared/hooks/useRoles";
 import { UserValidation } from "../../../shared/validation/userValidation";
 import { useNavigate } from "react-router-dom";
 
-export default function CreateNewUserForm() {
+export default function CreateUserForm() {
   const { createUser } = useUsers();
   const { roles, isLoading } = useRoles();
   const navigate = useNavigate();
@@ -60,8 +60,27 @@ export default function CreateNewUserForm() {
 
   return (
     <div className="min-h-screen flex justify-center bg-gray-50">
-      <div className="w-full max-w-3xl p-6">
-        <h2 className="text-gray-500 text-center">Create New User</h2>
+      <div className="w-full max-w-3xl p-1">
+        <div className="flex bg-gray-200 p-2 items-center justify-between">
+          <h2 className="text-[#0d2b5c] text-lg font-bold">Create User</h2>
+          <div className="flex gap-2">
+            {/* CANCEL */}
+            <button
+              onClick={() => navigate("/admin/users")}
+              className="bg-blue-600 text-white px-3 py-0.5 rounded cursor-pointer hover:bg-blue-800 active:scale-95 transition duration-150"
+            >
+              Cancel
+            </button>
+            {/* SUBMIT */}
+            <button
+              type="submit"
+              form="user-form"
+              className="bg-blue-600 text-white px-3 py-0.5 rounded cursor-pointer hover:bg-blue-800 active:scale-95 transition duration-150"
+            >
+              Create
+            </button>
+          </div>
+        </div>
         <Formik
           enableReinitialize
           initialValues={initialValues}
@@ -69,7 +88,7 @@ export default function CreateNewUserForm() {
           onSubmit={handleSubmit}
         >
           {({ values, errors, touched, setFieldValue, setFieldTouched }) => (
-            <Form className="grid grid-cols-2 gap-4">
+            <Form id="user-form" className="grid grid-cols-2 gap-4 mt-5">
               {/* FIRSTNAME */}
               <FormEditField label="Firstname" name="firstname" />
 
@@ -125,20 +144,6 @@ export default function CreateNewUserForm() {
                 name="avatarUrl"
                 divClassName="col-span-2 flex flex-col text-black"
               />
-
-              {/* SUBMIT */}
-              <div className="col-span-2 flex justify-center mt-4">
-                <button
-                  type="submit"
-                  className="bg-blue-600 text-white px-6 py-2 rounded
-             cursor-pointer
-             hover:bg-blue-700
-             active:scale-95
-             transition duration-150"
-                >
-                  Create user
-                </button>
-              </div>
             </Form>
           )}
         </Formik>
