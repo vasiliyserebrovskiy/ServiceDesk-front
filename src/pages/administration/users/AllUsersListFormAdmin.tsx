@@ -4,10 +4,12 @@ import { useUsers } from "../../../shared/hooks/useUsers";
 import { DataTable } from "../../../components/tables/DataTable";
 import { userColumns } from "./userColumns";
 import type { User } from "../../../shared/types/usersTypes";
+import { useNavigate } from "react-router-dom";
 
 export default function AllUsersListFormAdmin() {
   const { users, loading, loadUsers } = useUsers();
   const { roles, isLoading } = useRoles();
+  const navigate = useNavigate();
 
   // 1. we load the data once when mounting
   useEffect(() => {
@@ -39,7 +41,18 @@ export default function AllUsersListFormAdmin() {
 
   return (
     <div className="flex flex-col min-h-screen px-6 bg-gray-50">
-      <h2 className="text-gray-500">All Users</h2>
+      <div className="flex items-center justify-between p-1">
+        <h2 className="text-gray-500">All Users</h2>
+        <div className="flex gap-2">
+          {/* New */}
+          <button
+            onClick={() => navigate("/admin/create-user")}
+            className="bg-blue-600 text-white px-3 py-0.5 rounded cursor-pointer hover:bg-blue-800 active:scale-95 transition duration-150"
+          >
+            New
+          </button>
+        </div>
+      </div>
       <div className="flex">
         <DataTable
           data={enrichedUsers}

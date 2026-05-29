@@ -11,7 +11,7 @@ import FormDescField from "../../../components/form/FormDescField";
 import TableSection from "../../../components/tables/TableSection";
 import UsersTransferModal from "../../../components/modals/UsersTransferModal";
 
-export default function CreateGroupPage() {
+export default function CreateGroupForm() {
   const { createGroup } = useGroups();
   const { users, loadUsers } = useUsers();
   const navigate = useNavigate();

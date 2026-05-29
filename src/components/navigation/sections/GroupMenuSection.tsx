@@ -29,7 +29,7 @@ export default function GroupMenuSection({ closeAll }: Props) {
             onClick={closeAll}
             className="hover:text-blue-600"
           >
-            Create New Group
+            Create New
           </NavLink>
 
           <NavLink
