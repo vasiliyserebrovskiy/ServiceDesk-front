@@ -1,30 +1,27 @@
 import { useEffect, useState } from "react";
 import { Form, Formik, type FormikHelpers } from "formik";
 import { useNavigate, useParams } from "react-router-dom";
-
 import { useGroups } from "../../../shared/hooks/useGroups";
 import { useUsers } from "../../../shared/hooks/useUsers";
-
 import type { Group, GroupFormValues } from "../../../shared/types/groupsTypes";
-
 import type { User } from "../../../shared/types/usersTypes";
-
 import { GroupValidation } from "../../../shared/validation/groupValidation";
-
 import FormEditField from "../../../components/form/FormEditField";
 import FormDescField from "../../../components/form/FormDescField";
-
 import TableSection from "../../../components/tables/TableSection";
 import UsersTransferModal from "../../../components/modals/UsersTransferModal";
+import ConfirmDialog from "../../../components/modals/ConfirmDialog";
 
 export default function GroupDetails() {
   const { id } = useParams();
-  const { groups, getGroupById, updateGroupById } = useGroups();
+  const { groups, getGroupById, updateGroupById, deleteGroupById } =
+    useGroups();
   const { users, loadUsers, getUserById } = useUsers();
   const navigate = useNavigate();
   const [group, setGroup] = useState<Group | null>(null);
   const [groupUsers, setGroupUsers] = useState<User[]>([]);
   const [openUsersModal, setOpenUsersModal] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   /**
    * LOAD GROUP
@@ -81,10 +78,12 @@ export default function GroupDetails() {
     loadUsers();
   }, [group, getUserById]);
 
-  // need to check if users already loaded or not
+  // Get users if needed
   useEffect(() => {
-    loadUsers();
-  }, [loadUsers]);
+    if (!users.length) {
+      loadUsers();
+    }
+  }, [users.length, loadUsers]);
 
   /**
    * INVALID ID
@@ -119,8 +118,6 @@ export default function GroupDetails() {
     const payload = {
       name: values.name,
       description: values.description,
-
-      // IMPORTANT
       userIds: groupUsers.map((user) => user.id),
     };
 
@@ -135,12 +132,74 @@ export default function GroupDetails() {
     }
   };
 
+  // Logic for delete dialog
+  const handleDelete = () => {
+    deleteGroupById(id);
+    navigate("/groups/all");
+  };
+
   return (
     <div className="min-h-screen flex justify-center bg-gray-50">
-      <div className="w-full max-w-4xl p-6">
+      <div className="w-full max-w-4xl p-1">
         {/* TITLE */}
-        <h2 className="text-2xl font-semibold text-center mb-6">Edit Group</h2>
-
+        <div className="flex bg-gray-200 p-2 items-center justify-between">
+          <h2 className="text-[#0d2b5c]  text-lg font-bold">Edit Group</h2>
+          <div className="flex gap-2">
+            {/* CANCEL */}
+            <button
+              onClick={() => navigate("/groups/all")}
+              className="
+                    bg-blue-600
+                    text-white
+                    px-3
+                    py-0.5
+                    rounded
+                    cursor-pointer
+                    hover:bg-blue-800
+                    active:scale-95
+                    transition
+                    duration-150
+                  "
+            >
+              Cancel
+            </button>
+            {/* UPDATE */}
+            <button
+              type="submit"
+              form="group-form"
+              className="
+                    bg-blue-600
+                    text-white
+                    px-3
+                    py-0.5
+                    rounded
+                    cursor-pointer
+                    hover:bg-blue-800
+                    active:scale-95
+                    transition
+                    duration-150
+                  "
+            >
+              Update
+            </button>
+            {/* DELETE */}
+            <button
+              className=" bg-blue-600
+                    text-white
+                    px-3
+                    py-0.5
+                    rounded
+                    cursor-pointer
+                    hover:bg-blue-800
+                    active:scale-95
+                    transition
+                    duration-150"
+              onClick={() => setShowConfirm(true)}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
         {/* FORM */}
         <Formik
           enableReinitialize
@@ -149,7 +208,7 @@ export default function GroupDetails() {
           onSubmit={handleSubmit}
         >
           {() => (
-            <Form className="flex flex-col gap-4">
+            <Form id="group-form" className="flex flex-col gap-4 mt-5">
               {/* GROUP NAME */}
               <FormEditField label="Group Name" name="name" />
 
@@ -176,31 +235,9 @@ export default function GroupDetails() {
                 ]}
                 onEdit={() => setOpenUsersModal(true)}
               />
-
-              {/* SUBMIT */}
-              <div className="flex justify-center mt-6">
-                <button
-                  type="submit"
-                  className="
-                    bg-blue-600
-                    text-white
-                    px-6
-                    py-2
-                    rounded
-                    cursor-pointer
-                    hover:bg-blue-700
-                    active:scale-95
-                    transition
-                    duration-150
-                  "
-                >
-                  Update Group
-                </button>
-              </div>
             </Form>
           )}
         </Formik>
-
         {/* USERS MODAL */}
         <UsersTransferModal
           key={openUsersModal ? "open" : "closed"}
@@ -214,6 +251,15 @@ export default function GroupDetails() {
             setOpenUsersModal(false);
           }}
         />
+
+        {/* Dialog for delete confirmation */}
+        {showConfirm && (
+          <ConfirmDialog
+            message="Are you sure you want to delete this group?"
+            onConfirm={handleDelete}
+            onCancel={() => setShowConfirm(false)}
+          />
+        )}
       </div>
     </div>
   );
