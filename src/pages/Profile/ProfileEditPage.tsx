@@ -21,10 +21,6 @@ export default function ProfileEditPage() {
     return <div>Loading...</div>;
   }
 
-  console.log(user);
-  console.log(roleDisplayName);
-
-  // 2. loading state did not know if we realy need this
   if (!user || isLoading) {
     return <div>Loading user...</div>;
   }
@@ -53,9 +49,7 @@ export default function ProfileEditPage() {
     };
 
     try {
-      console.log("PAYLOAD: " + payload);
       await updateUser(user.id, payload);
-
       resetForm();
       navigate("/profile");
     } catch (error) {
@@ -116,10 +110,9 @@ export default function ProfileEditPage() {
               <FormEditField label="Email" name="email" />
 
               {/* ROLE */}
-              {/* <FormListField label="Role" name="role" options={roleOptions} /> */}
               <div className="flex flex-col text-black">
                 <label>Role</label>
-                <div className="border p-2 rounded bg-gray-100 text-gray-700">
+                <div className="border p-2 rounded bg-gray-200 text-gray-700">
                   {roleDisplayName}
                 </div>
               </div>

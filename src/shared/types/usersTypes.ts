@@ -67,6 +67,17 @@ export type ChangeUserPasswordDto = {
   newPassword: string;
 };
 
+export type ChangeUserPasswordForm = {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
+
 export type ResetUserPasswordDto = {
   newPassword: string;
+};
+
+export type ResetUserPasswordForm = {
+  newPassword: string;
+  confirmPassword: string;
 };
