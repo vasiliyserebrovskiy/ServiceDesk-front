@@ -113,6 +113,13 @@ export default function UserDetailsAdmin() {
             >
               Cancel
             </button>
+            {/* CANCEL */}
+            <button
+              onClick={() => navigate(`/admin/users/${id}/reset-password`)}
+              className="bg-blue-600 text-white px-3 py-0.5 rounded cursor-pointer hover:bg-blue-800 active:scale-95 transition duration-150"
+            >
+              Reset Password
+            </button>
             {/* UPDATE */}
             <button
               type="submit"

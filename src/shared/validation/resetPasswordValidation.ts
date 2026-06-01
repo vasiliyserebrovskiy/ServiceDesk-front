@@ -21,6 +21,6 @@ export const ResetPasswordValidation = Yup.object({
     ),
 
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Passwords must match")
+    .oneOf([Yup.ref("newPassword")], "Passwords must match")
     .required("Required"),
 });

@@ -1,38 +1,35 @@
-import { useUsers } from "../../shared/hooks/useUsers";
-import { useNavigate } from "react-router-dom";
-import type { ChangeUserPasswordForm } from "../../shared/types/usersTypes";
-import { useAppSelector } from "../../app/hooks";
+import { useParams, useNavigate } from "react-router-dom";
+import { useUsers } from "../../../shared/hooks/useUsers";
+import type { ResetUserPasswordForm } from "../../../shared/types/usersTypes";
 import { Form, Formik, type FormikHelpers } from "formik";
-import { ChangePasswordValidation } from "../../shared/validation/changePasswordValidation";
-import PasswordField from "../../components/form/PasswordField";
+import { ResetPasswordValidation } from "../../../shared/validation/resetPasswordValidation";
+import PasswordField from "../../../components/form/PasswordField";
 
-export default function ProfileChangePasswordPage() {
-  const { user } = useAppSelector((state) => state.auth);
-  const { changePassword } = useUsers();
+export default function ResetUserPasswordAdmin() {
+  const { id } = useParams();
+  const { resetPassword } = useUsers();
   const navigate = useNavigate();
 
-  if (!user) {
-    return <div>Loading user...</div>;
+  if (!id) {
+    return <div>Invalid user id</div>;
   }
 
-  const initialValues: ChangeUserPasswordForm = {
-    oldPassword: "",
+  const initialValues: ResetUserPasswordForm = {
     newPassword: "",
     confirmPassword: "",
   };
 
   const handleSubmit = async (
-    values: ChangeUserPasswordForm,
-    { resetForm }: FormikHelpers<ChangeUserPasswordForm>,
+    values: ResetUserPasswordForm,
+    { resetForm }: FormikHelpers<ResetUserPasswordForm>,
   ) => {
     const payload = {
-      oldPassword: values.oldPassword,
       newPassword: values.newPassword,
     };
     try {
-      await changePassword(user.id, payload);
+      await resetPassword(id, payload);
       resetForm();
-      navigate("/profile");
+      navigate(`/admin/users/${id}/`);
     } catch (error) {
       console.log(error);
     }
@@ -42,11 +39,11 @@ export default function ProfileChangePasswordPage() {
     <div className="min-h-screen flex justify-center bg-gray-50">
       <div className="w-full max-w-3xl p-1">
         <div className="flex bg-gray-200 p-2 items-center justify-between">
-          <h2 className="text-[#0d2b5c] text-lg font-bold">Change Password</h2>
+          <h2 className="text-[#0d2b5c] text-lg font-bold">Reset Password</h2>
           <div className="flex gap-2">
             {/* CANCEL */}
             <button
-              onClick={() => navigate("/profile")}
+              onClick={() => navigate(`/admin/users/${id}/`)}
               className="bg-blue-600 text-white px-3 py-0.5 rounded cursor-pointer hover:bg-blue-800 active:scale-95 transition duration-150"
             >
               Cancel
@@ -54,7 +51,7 @@ export default function ProfileChangePasswordPage() {
             {/* SUBMIT */}
             <button
               type="submit"
-              form="change-password-form"
+              form="reset-password-form"
               className="bg-blue-600 text-white px-3 py-0.5 rounded cursor-pointer hover:bg-blue-800 active:scale-95 transition duration-150"
             >
               Save
@@ -65,34 +62,14 @@ export default function ProfileChangePasswordPage() {
         <Formik
           enableReinitialize
           initialValues={initialValues}
-          validationSchema={ChangePasswordValidation}
+          validationSchema={ResetPasswordValidation}
           onSubmit={handleSubmit}
         >
           {({ values, errors, touched, setFieldValue, setFieldTouched }) => (
             <Form
-              id="change-password-form"
+              id="reset-password-form"
               className="grid grid-cols-2 gap-4 mt-5"
             >
-              {/* OLD PASSWORD */}
-              <div className="flex flex-col">
-                <PasswordField
-                  value={values.oldPassword}
-                  onChange={(val) => setFieldValue("oldPassword", val)}
-                  onBlur={() => setFieldTouched("oldPassword", true)}
-                  label="Old Password"
-                  placeholder="old password"
-                  labelClassName="text-black"
-                  inputClassName="border border-black p-2 rounded w-full pr-10 text-black"
-                />
-                {touched.oldPassword && errors.oldPassword && (
-                  <span className="text-red-500 text-sm">
-                    {errors.oldPassword}
-                  </span>
-                )}
-              </div>
-
-              <div className="flex flex-col"></div>
-
               {/* NEW PASSWORD */}
               <div className="flex flex-col">
                 <PasswordField
