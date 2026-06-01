@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { User } from "../../shared/types/usersTypes";
+import { updateUserThunk } from "../../features/users/usersThunks";
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -31,6 +32,13 @@ const authSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(updateUserThunk.fulfilled, (state, action) => {
+      if (state.user?.id === action.payload.id) {
+        state.user = action.payload;
+      }
+    });
   },
 });
 

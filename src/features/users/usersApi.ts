@@ -3,6 +3,8 @@ import type {
   CreateUserDto,
   User,
   UpdateUserDto,
+  ChangeUserPasswordDto,
+  ResetUserPasswordDto,
 } from "../../shared/types/usersTypes";
 
 // Get all users
@@ -30,4 +32,20 @@ export const updateUser = async (
 ): Promise<User> => {
   const { data } = await api.patch<User>(`/v1/users/${id}`, payload);
   return data;
+};
+
+// Change user password
+export const changeUserPassword = async (
+  id: string,
+  payload: ChangeUserPasswordDto,
+): Promise<void> => {
+  await api.patch(`/v1/users/${id}/password`, payload);
+};
+
+// Reset user password
+export const resetUserPassword = async (
+  id: string,
+  payload: ResetUserPasswordDto,
+): Promise<void> => {
+  await api.post(`/v1/users/${id}/reset-password`, payload);
 };

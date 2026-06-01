@@ -61,3 +61,12 @@ export type UpdateUserDto = {
   description: string;
   avatarUrl: string;
 };
+
+export type ChangeUserPasswordDto = {
+  oldPassword: string;
+  newPassword: string;
+};
+
+export type ResetUserPasswordDto = {
+  newPassword: string;
+};

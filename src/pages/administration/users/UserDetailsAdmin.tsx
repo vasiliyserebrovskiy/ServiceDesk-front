@@ -102,7 +102,7 @@ export default function UserDetailsAdmin() {
 
   return (
     <div className="min-h-screen flex justify-center bg-gray-50">
-      <div className="w-full max-w-3xl p-6">
+      <div className="w-full max-w-3xl p-1">
         <div className="flex bg-gray-200 p-2 items-center justify-between">
           <h2 className="text-[#0d2b5c]  text-lg font-bold">Edit User</h2>
           <div className="flex gap-2">
@@ -141,7 +141,7 @@ export default function UserDetailsAdmin() {
           onSubmit={handleSubmit}
         >
           {({ values, setFieldValue }) => (
-            <Form id="user-form" className="grid grid-cols-2 gap-4">
+            <Form id="user-form" className="grid grid-cols-2 gap-4 mt-5">
               {/* FIRSTNAME */}
               <FormEditField label="Firstname" name="firstname" />
 

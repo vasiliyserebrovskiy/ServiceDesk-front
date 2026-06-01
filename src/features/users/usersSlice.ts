@@ -1,56 +1,13 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { initialState } from "../../shared/types/usersTypes";
 import {
-  type User,
-  type CreateUserDto,
-  type UpdateUserDto,
-  initialState,
-} from "../../shared/types/usersTypes";
-import {
-  fetchUsers,
-  createNewUser,
-  fetchUser,
-  updateUser,
-} from "../../features/users/usersApi";
-
-/**
- * Load all users
- */
-export const getUsersThunk = createAsyncThunk<User[]>(
-  "users/getAll",
-  async () => {
-    return await fetchUsers();
-  },
-);
-
-/**
- * Create new user
- */
-export const createUserThunk = createAsyncThunk<User, CreateUserDto>(
-  "users/create",
-  async (newUser) => {
-    return await createNewUser(newUser);
-  },
-);
-
-/**
- * Load user by id
- */
-export const getUserByIdThunk = createAsyncThunk<User, string>(
-  "users/getById",
-  async (id) => {
-    return await fetchUser(id);
-  },
-);
-
-/**
- * Update user by id
- */
-export const updateUserThunk = createAsyncThunk<
-  User,
-  { id: string; data: UpdateUserDto }
->("users/update", async ({ id, data }) => {
-  return await updateUser(id, data);
-});
+  getUsersThunk,
+  createUserThunk,
+  getUserByIdThunk,
+  updateUserThunk,
+  changeUserPasswordThunk,
+  resetUserPasswordThunk,
+} from "./usersThunks";
 
 const usersSlice = createSlice({
   name: "users",
@@ -118,6 +75,40 @@ const usersSlice = createSlice({
 
     builder.addCase(updateUserThunk.rejected, (state, action) => {
       state.error = action.error.message ?? "Failed to update user";
+    });
+
+    /**
+     * CHANGE PASSWORD
+     */
+    builder.addCase(changeUserPasswordThunk.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+
+    builder.addCase(changeUserPasswordThunk.fulfilled, (state) => {
+      state.loading = false;
+    });
+
+    builder.addCase(changeUserPasswordThunk.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message ?? "Failed to change password";
+    });
+
+    /**
+     * RESET PASSWORD
+     */
+    builder.addCase(resetUserPasswordThunk.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+
+    builder.addCase(resetUserPasswordThunk.fulfilled, (state) => {
+      state.loading = false;
+    });
+
+    builder.addCase(resetUserPasswordThunk.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message ?? "Failed to reset password";
     });
   },
 });
