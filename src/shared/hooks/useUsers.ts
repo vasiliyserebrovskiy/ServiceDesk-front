@@ -5,10 +5,14 @@ import {
   createUserThunk,
   getUserByIdThunk,
   updateUserThunk,
-} from "../../features/users/usersSlice";
+  changeUserPasswordThunk,
+  resetUserPasswordThunk,
+} from "../../features/users/usersThunks";
 import type {
   CreateUserDto,
   UpdateUserDto,
+  ChangeUserPasswordDto,
+  ResetUserPasswordDto,
 } from "../../shared/types/usersTypes";
 
 export const useUsers = () => {
@@ -53,6 +57,27 @@ export const useUsers = () => {
     },
     [dispatch],
   );
+
+  /**
+   * Change user password
+   */
+  const changePassword = useCallback(
+    async (id: string, data: ChangeUserPasswordDto) => {
+      return await dispatch(changeUserPasswordThunk({ id, data })).unwrap();
+    },
+    [dispatch],
+  );
+
+  /**
+   * Reset user password
+   */
+  const resetPassword = useCallback(
+    async (id: string, data: ResetUserPasswordDto) => {
+      return await dispatch(resetUserPasswordThunk({ id, data })).unwrap();
+    },
+    [dispatch],
+  );
+
   return {
     users,
     loading,
@@ -61,5 +86,7 @@ export const useUsers = () => {
     createUser,
     getUserById,
     updateUser,
+    changePassword,
+    resetPassword,
   };
 };

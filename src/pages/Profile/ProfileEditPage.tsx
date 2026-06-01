@@ -1,65 +1,26 @@
-import { useEffect, useMemo, useState } from "react";
-import { Formik, Form } from "formik";
-import type { FormikHelpers } from "formik";
-import { useParams, useNavigate } from "react-router-dom";
-import { useUsers } from "../../../shared/hooks/useUsers";
-import { useRoles } from "../../../shared/hooks/useRoles";
-import FormEditField from "../../../components/form/FormEditField";
-import FormListField from "../../../components/form/FormListField";
-import FormDescField from "../../../components/form/FormDescField";
-import type { User } from "../../../shared/types/usersTypes";
-import { updateUserValidation } from "../../../shared/validation/updateUserValidation";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../app/hooks";
+import { useRoles } from "../../shared/hooks/useRoles";
+import { getRoleDisplayName } from "../../shared/utils/getRoleDisplayName";
 
-export default function UserDetailsAdmin() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { users, getUserById, updateUser } = useUsers();
+import { Form, Formik, type FormikHelpers } from "formik";
+import FormEditField from "../../components/form/FormEditField";
+import FormDescField from "../../components/form/FormDescField";
+import { updateProfileValidation } from "../../shared/validation/updateProfileValidation";
+import { useUsers } from "../../shared/hooks/useUsers";
+
+export default function ProfileEditPage() {
+  const { user } = useAppSelector((state) => state.auth);
   const { roles, isLoading } = useRoles();
-  const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
+  const { updateUser } = useUsers();
 
-  // roles options
-  const roleOptions = useMemo(() => {
-    return (
-      roles?.map((role) => ({
-        value: role.id,
-        label: role.displayName,
-      })) || []
-    );
-  }, [roles]);
+  const roleDisplayName = getRoleDisplayName(user?.roleId, roles ?? []);
 
-  // 1. try get from store
-  useEffect(() => {
-    if (!id) return;
-
-    const userFromStore = users.find((u) => u.id === id);
-
-    let cancelled = false;
-
-    const load = async () => {
-      if (userFromStore) {
-        setUser(userFromStore);
-        return;
-      }
-
-      const data = await getUserById(id);
-
-      if (!cancelled) {
-        setUser(data);
-      }
-    };
-
-    load();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [id, users, getUserById]);
-
-  if (!id) {
-    return <div>Invalid user id</div>;
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
-  // 2. loading state
   if (!user || isLoading) {
     return <div>Loading user...</div>;
   }
@@ -68,11 +29,8 @@ export default function UserDetailsAdmin() {
     firstname: user.firstname || "",
     lastname: user.lastname || "",
     email: user.email || "",
-    role: user.roleId || "",
     description: user.description || "",
     avatarUrl: user.avatarUrl || "",
-    isActive: user.isActive ?? true,
-    isBlocked: user.isBlocked ?? false,
   };
 
   const handleSubmit = async (
@@ -83,18 +41,17 @@ export default function UserDetailsAdmin() {
       firstname: values.firstname,
       lastname: values.lastname,
       email: values.email,
-      roleId: values.role,
+      roleId: user.roleId,
       description: values.description,
       avatarUrl: values.avatarUrl,
-      isActive: values.isActive,
-      isBlocked: values.isBlocked,
+      isActive: user.isActive,
+      isBlocked: user.isBlocked,
     };
 
     try {
-      await updateUser(id, payload);
-
+      await updateUser(user.id, payload);
       resetForm();
-      navigate("/admin/users");
+      navigate("/profile");
     } catch (error) {
       console.log(error);
     }
@@ -104,26 +61,19 @@ export default function UserDetailsAdmin() {
     <div className="min-h-screen flex justify-center bg-gray-50">
       <div className="w-full max-w-3xl p-1">
         <div className="flex bg-gray-200 p-2 items-center justify-between">
-          <h2 className="text-[#0d2b5c]  text-lg font-bold">Edit User</h2>
+          <h2 className="text-[#0d2b5c]  text-lg font-bold">Edit Profile</h2>
           <div className="flex gap-2">
             {/* CANCEL */}
             <button
-              onClick={() => navigate("/admin/users")}
+              onClick={() => navigate("/profile")}
               className="bg-blue-600 text-white px-3 py-0.5 rounded cursor-pointer hover:bg-blue-800 active:scale-95 transition duration-150"
             >
               Cancel
             </button>
-            {/* CANCEL */}
-            <button
-              onClick={() => navigate(`/admin/users/${id}/reset-password`)}
-              className="bg-blue-600 text-white px-3 py-0.5 rounded cursor-pointer hover:bg-blue-800 active:scale-95 transition duration-150"
-            >
-              Reset Password
-            </button>
-            {/* UPDATE */}
+            {/* SAVE */}
             <button
               type="submit"
-              form="user-form"
+              form="me-update"
               className="
                     bg-blue-600
                     text-white
@@ -137,18 +87,19 @@ export default function UserDetailsAdmin() {
                     duration-150
                   "
             >
-              Update
+              Save
             </button>
           </div>
         </div>
+        {/* FORMIK */}
         <Formik
           enableReinitialize
           initialValues={initialValues}
-          validationSchema={updateUserValidation}
+          validationSchema={updateProfileValidation}
           onSubmit={handleSubmit}
         >
-          {({ values, setFieldValue }) => (
-            <Form id="user-form" className="grid grid-cols-2 gap-4 mt-5">
+          {() => (
+            <Form id="me-update" className="grid grid-cols-2 gap-4 mt-5">
               {/* FIRSTNAME */}
               <FormEditField label="Firstname" name="firstname" />
 
@@ -159,7 +110,12 @@ export default function UserDetailsAdmin() {
               <FormEditField label="Email" name="email" />
 
               {/* ROLE */}
-              <FormListField label="Role" name="role" options={roleOptions} />
+              <div className="flex flex-col text-black">
+                <label>Role</label>
+                <div className="border p-2 rounded bg-gray-200 text-gray-700">
+                  {roleDisplayName}
+                </div>
+              </div>
 
               {/* DESCRIPTION */}
               <FormDescField label="Description" name="description" />
@@ -172,7 +128,7 @@ export default function UserDetailsAdmin() {
               />
 
               {/* FLAGS */}
-              <div className="col-span-2 flex gap-6 mt-2">
+              {/* <div className="col-span-2 flex gap-6 mt-2">
                 <label className="flex items-center gap-2 text-sm">
                   <input
                     type="checkbox"
@@ -194,7 +150,7 @@ export default function UserDetailsAdmin() {
                   />
                   Blocked
                 </label>
-              </div>
+              </div> */}
             </Form>
           )}
         </Formik>

@@ -3,6 +3,7 @@ import CreateNewUser from "../pages/administration/users/CreateUserForm";
 import { RolesList } from "../pages/administration/roles/RoleList";
 import AdminRoute from "./AdminRoute";
 import UserDetailsAdmin from "../pages/administration/users/UserDetailsAdmin";
+import ResetUserPasswordAdmin from "../pages/administration/users/ResetUserPasswordAdmin";
 
 export const adminRoutes = [
   {
@@ -34,6 +35,14 @@ export const adminRoutes = [
     element: (
       <AdminRoute>
         <UserDetailsAdmin />
+      </AdminRoute>
+    ),
+  },
+  {
+    path: "admin/users/:id/reset-password",
+    element: (
+      <AdminRoute>
+        <ResetUserPasswordAdmin />
       </AdminRoute>
     ),
   },

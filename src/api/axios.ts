@@ -1,7 +1,7 @@
 import axios from "axios";
-import { store } from "../app/store";
 import { clearAuth } from "../features/auth/authSlice";
 import { setError } from "../features/error/errorSlice";
+import type { AppDispatch } from "../app/store";
 
 type QueueItem = {
   resolve: (value?: unknown) => void;
@@ -13,6 +13,12 @@ export const api = axios.create({
   withCredentials: true,
 });
 
+let dispatch: AppDispatch | null = null;
+
+export const injectDispatch = (d: AppDispatch) => {
+  dispatch = d;
+};
+
 let isRefreshing = false;
 let failedQueue: QueueItem[] = [];
 
@@ -21,16 +27,13 @@ const processQueue = (error: unknown) => {
     if (error) promise.reject(error);
     else promise.resolve();
   });
-
   failedQueue = [];
 };
 
 api.interceptors.response.use(
   (response) => response,
-
   async (error) => {
     const originalRequest = error.config;
-
     const status = error.response?.status;
     const message = error.response?.data?.message;
 
@@ -38,9 +41,6 @@ api.interceptors.response.use(
       originalRequest.url?.includes("/auth/login") ||
       originalRequest.url?.includes("/auth/refresh-token");
 
-    // =========================
-    // 401 → refresh flow
-    // =========================
     if (status === 401 && !originalRequest._retry && !isAuthRequest) {
       originalRequest._retry = true;
 
@@ -58,42 +58,29 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (err) {
         processQueue(err);
-        store.dispatch(clearAuth());
+        dispatch?.(clearAuth());
         return Promise.reject(err);
       } finally {
         isRefreshing = false;
       }
     }
 
-    // =========================
-    // 403 → AUTH STATE errors
-    // (blocked / inactive)
-    // =========================
     if (status === 403) {
       const isAuthStateError =
         message?.includes("not active") || message?.includes("locked");
 
       if (isAuthStateError) {
-        store.dispatch(clearAuth());
-        store.dispatch(setError(message)); // here we need banner
+        dispatch?.(clearAuth());
+        dispatch?.(setError(message));
         return Promise.reject(error);
       }
     }
 
-    // =========================
-    // LOGIN PAGE errors (401)
-    // did not otuch → to avoid breaking the login UI
-    // =========================
-
-    // =========================
-    // GLOBAL errors (toast)
-    // =========================
     const skipToast = error.config?.meta?.skipToast;
 
     if (!isAuthRequest && !skipToast) {
       const finalMessage = message || error.message || "Something went wrong";
-
-      store.dispatch(setError(finalMessage));
+      dispatch?.(setError(finalMessage));
     }
 
     return Promise.reject(error);
