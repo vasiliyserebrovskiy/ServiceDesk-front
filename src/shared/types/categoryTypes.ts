@@ -28,12 +28,14 @@ export type UpdateCategoryDto = {
 
 export interface CategoryState {
   categories: Category[];
+  incidentCategories: Category[];
   loading: boolean;
   error: string | null;
 }
 
 export const initialState: CategoryState = {
   categories: [],
+  incidentCategories: [],
   loading: false,
   error: null,
 };
@@ -48,6 +50,7 @@ export type CategoryFormValues = {
 };
 
 export type CategoryList = {
+  id: string;
   name: string;
   description: string;
   isIncident: boolean;

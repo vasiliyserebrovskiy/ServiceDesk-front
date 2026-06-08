@@ -7,6 +7,7 @@ import {
 } from "../../shared/types/categoryTypes";
 import {
   fetchIncidentsCategories,
+  fetchCategories,
   createNewCategory,
   updateCategory,
   deleteCategory,
@@ -20,6 +21,16 @@ export const getIncidentsCategoriesThunk = createAsyncThunk<Category[]>(
   "categories/getIncidentAll",
   async () => {
     return await fetchIncidentsCategories();
+  },
+);
+
+/**
+ * Load all  categories
+ */
+export const getCategoriesThunk = createAsyncThunk<Category[]>(
+  "categories/getAll",
+  async () => {
+    return await fetchCategories();
   },
 );
 
@@ -79,13 +90,31 @@ const categoriesSlice = createSlice({
 
     builder.addCase(getIncidentsCategoriesThunk.fulfilled, (state, action) => {
       state.loading = false;
-      state.categories = action.payload;
+      state.incidentCategories = action.payload;
     });
 
     builder.addCase(getIncidentsCategoriesThunk.rejected, (state, action) => {
       state.loading = false;
       state.error =
         action.error.message ?? "Failed to fetch incidents categories";
+    });
+
+    /**
+     * GET ALL CATEGORIES
+     */
+    builder.addCase(getCategoriesThunk.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+
+    builder.addCase(getCategoriesThunk.fulfilled, (state, action) => {
+      state.loading = false;
+      state.categories = action.payload;
+    });
+
+    builder.addCase(getCategoriesThunk.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message ?? "Failed to fetch categories";
     });
 
     /**

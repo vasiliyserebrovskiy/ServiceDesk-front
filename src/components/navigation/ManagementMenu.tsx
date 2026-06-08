@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import GroupMenuSection from "./sections/GroupMenuSection";
+import CategoriesMenuSection from "./sections/CategoriesMenuSection";
 
 export default function ManagementMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,6 +60,7 @@ export default function ManagementMenu() {
           "
         >
           <GroupMenuSection closeAll={closeAll} />
+          <CategoriesMenuSection closeAll={closeAll} />
         </div>
       )}
     </div>

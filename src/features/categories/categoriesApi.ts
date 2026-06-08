@@ -11,6 +11,12 @@ export const fetchIncidentsCategories = async (): Promise<Category[]> => {
   return data;
 };
 
+// Get all categories
+export const fetchCategories = async (): Promise<Category[]> => {
+  const { data } = await api.get<Category[]>("/v1/categories");
+  return data;
+};
+
 // Create new category
 export const createNewCategory = async (
   newCategory: CreateCategoryDto,

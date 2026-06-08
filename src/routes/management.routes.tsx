@@ -1,3 +1,6 @@
+import AllCategoriesListForm from "../pages/management/categories/AllCategoriesListForm";
+import CategoryDetails from "../pages/management/categories/CategoryDetails";
+import CreateCategoryForm from "../pages/management/categories/CreateCategoryForm";
 import AllGroupsListForm from "../pages/management/groups/AllGroupsListForm";
 import CreateGroupForm from "../pages/management/groups/CreateGroupForm";
 import GroupDetails from "../pages/management/groups/GroupDetails";
@@ -25,6 +28,30 @@ export const managementRoutes = [
     element: (
       <ManagementRoute>
         <GroupDetails />
+      </ManagementRoute>
+    ),
+  },
+  {
+    path: "/categories/create",
+    element: (
+      <ManagementRoute>
+        <CreateCategoryForm />
+      </ManagementRoute>
+    ),
+  },
+  {
+    path: "/categories/all",
+    element: (
+      <ManagementRoute>
+        <AllCategoriesListForm />
+      </ManagementRoute>
+    ),
+  },
+  {
+    path: "/categories/:id",
+    element: (
+      <ManagementRoute>
+        <CategoryDetails />
       </ManagementRoute>
     ),
   },

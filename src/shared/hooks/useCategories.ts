@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   getIncidentsCategoriesThunk,
+  getCategoriesThunk,
   createCategoryThunk,
   updateCategoryByIdThunk,
   deleteCategoryByIdThunk,
@@ -16,14 +17,24 @@ export const useCategories = () => {
   const dispatch = useAppDispatch();
 
   const categories = useAppSelector((state) => state.categories.categories);
+  const incidentCategories = useAppSelector(
+    (state) => state.categories.incidentCategories,
+  );
   const loading = useAppSelector((state) => state.categories.loading);
   const error = useAppSelector((state) => state.categories.error);
 
   /**
-   * Load all incidents categpries
+   * Load all incidents categories
    */
   const loadIncidentCategories = useCallback(() => {
     dispatch(getIncidentsCategoriesThunk());
+  }, [dispatch]);
+
+  /**
+   * Load all categories
+   */
+  const loadCategories = useCallback(() => {
+    dispatch(getCategoriesThunk());
   }, [dispatch]);
 
   /**
@@ -66,9 +77,11 @@ export const useCategories = () => {
   );
   return {
     categories,
+    incidentCategories,
     loading,
     error,
     loadIncidentCategories,
+    loadCategories,
     createCategory,
     updateCategoryById,
     deleteCategoryById,
