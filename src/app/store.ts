@@ -4,6 +4,7 @@ import errorReducer from "../features/error/errorSlice";
 import roleReducer from "../features/roles/roleSlice";
 import usersReducer from "../features/users/usersSlice";
 import groupsReducer from "../features/groups/groupsSlice";
+import categoriesReducer from "../features/categories/categoriesSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     roles: roleReducer,
     users: usersReducer,
     groups: groupsReducer,
+    categories: categoriesReducer,
   },
 });
 
