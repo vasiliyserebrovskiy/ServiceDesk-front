@@ -4,6 +4,8 @@ export const EMAIL_MIN_LENGTH = 5;
 export const EMAIL_MAX_LENGTH = 255;
 export const GROUP_NAME_MIN_LENGTH = 2;
 export const GROUP_NAME_MAX_LENGTH = 200;
+export const CATEGORY_NAME_MIN_LENGTH = 2;
+export const CATEGORY_NAME_MAX_LENGTH = 255;
 
 export const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&*_+=\-/\\.,])[A-Za-z\d~!@#$%^&*_+=\-/\\.,]+$/;
