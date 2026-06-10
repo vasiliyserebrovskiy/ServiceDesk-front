@@ -45,7 +45,7 @@ export default function CreateGroupForm() {
       <div className="w-full max-w-4xl p-1">
         {/* TITLE */}
         <div className="flex bg-gray-200 p-2 items-center justify-between">
-          <h2 className="text-[#0d2b5c] text-lg font-bold">Create Group</h2>
+          <h2 className="text-[#0d2b5c] text-lg font-bold">Create Category</h2>
           <div className="flex gap-2">
             {/* CANCEL */}
             <button
@@ -74,7 +74,7 @@ export default function CreateGroupForm() {
         >
           {({ values, setFieldValue }) => (
             <Form id="category-form" className="flex flex-col gap-4 mt-5">
-              {/* GROUP NAME */}
+              {/* CATEGORY NAME */}
               <FormEditField label="Category Name" name="name" />
 
               {/* DESCRIPTION */}

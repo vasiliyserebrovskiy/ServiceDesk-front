@@ -4,6 +4,9 @@ import CreateCategoryForm from "../pages/management/categories/CreateCategoryFor
 import AllGroupsListForm from "../pages/management/groups/AllGroupsListForm";
 import CreateGroupForm from "../pages/management/groups/CreateGroupForm";
 import GroupDetails from "../pages/management/groups/GroupDetails";
+import AllSubcategoriesListForm from "../pages/management/subcategories/AllSubcategoriesListForm";
+import CreateSubcategoryForm from "../pages/management/subcategories/CreateSubcategoryForm";
+import SubcategoryDetails from "../pages/management/subcategories/SubcategoryDetails";
 import ManagementRoute from "./ManagementRoute";
 
 export const managementRoutes = [
@@ -52,6 +55,30 @@ export const managementRoutes = [
     element: (
       <ManagementRoute>
         <CategoryDetails />
+      </ManagementRoute>
+    ),
+  },
+  {
+    path: "/subcategories/create",
+    element: (
+      <ManagementRoute>
+        <CreateSubcategoryForm />
+      </ManagementRoute>
+    ),
+  },
+  {
+    path: "/subcategories/all",
+    element: (
+      <ManagementRoute>
+        <AllSubcategoriesListForm />
+      </ManagementRoute>
+    ),
+  },
+  {
+    path: "/subcategories/:id",
+    element: (
+      <ManagementRoute>
+        <SubcategoryDetails />
       </ManagementRoute>
     ),
   },
