@@ -19,8 +19,8 @@ import {
  */
 export const getSubcategoriesByCategoryIdThunk = createAsyncThunk<
   Subcategory[],
-  { id: string }
->("subcategories/getByCategoryId", async ({ id }) => {
+  string
+>("subcategories/getByCategoryId", async (id) => {
   return await fetchSubcategoriesByCategoryId(id);
 });
 

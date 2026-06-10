@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import SubcategoriesMenuSection from "./SubcategoriesMenuSection";
 
 type Props = {
   closeAll: () => void;
 };
 
-export default function CategoriesMenuSection({ closeAll }: Props) {
+export default function SubcategoriesMenuSection({ closeAll }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -20,13 +19,13 @@ export default function CategoriesMenuSection({ closeAll }: Props) {
           hover:text-blue-600
         "
       >
-        Categories
+        Subcategories
       </button>
 
       {isOpen && (
         <div className="ml-4 mt-2 flex flex-col gap-1">
           <NavLink
-            to="/categories/create"
+            to="/subcategories/create"
             onClick={closeAll}
             className="hover:text-blue-600"
           >
@@ -34,14 +33,12 @@ export default function CategoriesMenuSection({ closeAll }: Props) {
           </NavLink>
 
           <NavLink
-            to="/categories/all"
+            to="/subcategories/all"
             onClick={closeAll}
             className="hover:text-blue-600"
           >
-            Categories List
+            Subcategories List
           </NavLink>
-
-          <SubcategoriesMenuSection closeAll={closeAll} />
         </div>
       )}
     </div>
