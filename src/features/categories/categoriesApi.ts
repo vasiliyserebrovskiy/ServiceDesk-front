@@ -40,7 +40,7 @@ export const deleteCategory = async (id: string): Promise<void> => {
 };
 
 // Get category by id
-export const fetchCategory = async (id: string): Promise<Category> => {
+export const fetchCategoryById = async (id: string): Promise<Category> => {
   const { data } = await api.get(`/v1/categories/${id}`);
   return data;
 };

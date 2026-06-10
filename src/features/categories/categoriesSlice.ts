@@ -11,7 +11,7 @@ import {
   createNewCategory,
   updateCategory,
   deleteCategory,
-  fetchCategory,
+  fetchCategoryById,
 } from "./categoriesApi";
 
 /**
@@ -71,7 +71,7 @@ export const deleteCategoryByIdThunk = createAsyncThunk<string, string>(
 export const getCategoryByIdThunk = createAsyncThunk<Category, string>(
   "category/getById",
   async (id) => {
-    return await fetchCategory(id);
+    return await fetchCategoryById(id);
   },
 );
 
@@ -129,13 +129,13 @@ const categoriesSlice = createSlice({
     });
 
     /**
-     * UPDATE GROUP BY ID
+     * UPDATE CATEGORY BY ID
      */
     builder.addCase(updateCategoryByIdThunk.fulfilled, (state, action) => {
       const updatedCategory = action.payload;
 
       const index = state.categories.findIndex(
-        (g) => g.id === updatedCategory.id,
+        (c) => c.id === updatedCategory.id,
       );
 
       if (index !== -1) {
@@ -144,11 +144,11 @@ const categoriesSlice = createSlice({
     });
 
     builder.addCase(updateCategoryByIdThunk.rejected, (state, action) => {
-      state.error = action.error.message ?? "Failed to update group";
+      state.error = action.error.message ?? "Failed to update category";
     });
 
     /**
-     * DELETE GROUP BY ID
+     * DELETE CATEGORY BY ID
      */
     builder.addCase(deleteCategoryByIdThunk.fulfilled, (state, action) => {
       state.categories = state.categories.filter(
@@ -159,7 +159,7 @@ const categoriesSlice = createSlice({
 
     builder.addCase(deleteCategoryByIdThunk.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.error.message ?? "Failed to delete group";
+      state.error = action.error.message ?? "Failed to delete category";
     });
     builder.addCase(deleteCategoryByIdThunk.pending, (state) => {
       state.loading = true;
@@ -167,7 +167,7 @@ const categoriesSlice = createSlice({
     });
 
     /**
-     * GET GROUP BY ID
+     * GET CATEGORY BY ID
      */
     builder.addCase(getCategoryByIdThunk.pending, (state) => {
       state.loading = true;
@@ -180,7 +180,7 @@ const categoriesSlice = createSlice({
 
     builder.addCase(getCategoryByIdThunk.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.error.message ?? "Failed to fetch group";
+      state.error = action.error.message ?? "Failed to fetch category by id";
     });
   },
 });
