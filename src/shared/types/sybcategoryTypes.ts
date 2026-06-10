@@ -8,7 +8,7 @@ export interface Subcategory {
 export type CreateSubcategoryDto = {
   name: string;
   description: string;
-  categoriId: string;
+  categoryId: string;
 };
 
 export type UpdateSubcategoryDto = {
@@ -41,5 +41,5 @@ export type SubcategoryList = {
   id: string;
   name: string;
   description: string;
-  categoryId: string;
+  categoryName: string;
 };

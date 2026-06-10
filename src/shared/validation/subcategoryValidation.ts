@@ -4,7 +4,7 @@ import {
   SUBCATEGORY_NAME_MAX_LENGTH,
 } from "./validationConstants";
 
-export const CategoryValidation = Yup.object({
+export const SubcategoryValidation = Yup.object({
   name: Yup.string()
     .min(
       SUBCATEGORY_NAME_MIN_LENGTH,
