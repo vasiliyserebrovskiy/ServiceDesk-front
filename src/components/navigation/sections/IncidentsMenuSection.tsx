@@ -19,7 +19,7 @@ export default function IncidentsMenuSection({ closeAll }: Props) {
           hover:text-blue-600
         "
       >
-        Incidents
+        Incident
       </button>
 
       {isOpen && (

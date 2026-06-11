@@ -19,7 +19,7 @@ export default function GroupMenuSection({ closeAll }: Props) {
           hover:text-blue-600
         "
       >
-        Groups
+        Group
       </button>
 
       {isOpen && (
@@ -37,7 +37,7 @@ export default function GroupMenuSection({ closeAll }: Props) {
             onClick={closeAll}
             className="hover:text-blue-600"
           >
-            Groups List
+            Group List
           </NavLink>
         </div>
       )}

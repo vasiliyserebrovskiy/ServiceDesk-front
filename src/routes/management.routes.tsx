@@ -4,6 +4,9 @@ import CreateCategoryForm from "../pages/management/categories/CreateCategoryFor
 import AllGroupsListForm from "../pages/management/groups/AllGroupsListForm";
 import CreateGroupForm from "../pages/management/groups/CreateGroupForm";
 import GroupDetails from "../pages/management/groups/GroupDetails";
+import AllStatusesListForm from "../pages/management/statuses/AllStatusesListForm";
+import CreateStatusForm from "../pages/management/statuses/CreateStatusForm";
+import StatusDetails from "../pages/management/statuses/StatusDetails";
 import AllSubcategoriesListForm from "../pages/management/subcategories/AllSubcategoriesListForm";
 import CreateSubcategoryForm from "../pages/management/subcategories/CreateSubcategoryForm";
 import SubcategoryDetails from "../pages/management/subcategories/SubcategoryDetails";
@@ -79,6 +82,30 @@ export const managementRoutes = [
     element: (
       <ManagementRoute>
         <SubcategoryDetails />
+      </ManagementRoute>
+    ),
+  },
+  {
+    path: "/statuses/create",
+    element: (
+      <ManagementRoute>
+        <CreateStatusForm />
+      </ManagementRoute>
+    ),
+  },
+  {
+    path: "/statuses/all",
+    element: (
+      <ManagementRoute>
+        <AllStatusesListForm />
+      </ManagementRoute>
+    ),
+  },
+  {
+    path: "/statuses/:id",
+    element: (
+      <ManagementRoute>
+        <StatusDetails />
       </ManagementRoute>
     ),
   },

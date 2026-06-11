@@ -19,7 +19,7 @@ export default function SubcategoriesMenuSection({ closeAll }: Props) {
           hover:text-blue-600
         "
       >
-        Subcategories
+        Subcategory
       </button>
 
       {isOpen && (
@@ -37,7 +37,7 @@ export default function SubcategoriesMenuSection({ closeAll }: Props) {
             onClick={closeAll}
             className="hover:text-blue-600"
           >
-            Subcategories List
+            Subcategory List
           </NavLink>
         </div>
       )}

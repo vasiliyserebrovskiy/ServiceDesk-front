@@ -58,7 +58,7 @@ export const updateSubcategoryByIdThunk = createAsyncThunk<
  * Delete subcategory by id
  */
 export const deleteSybcategoryByIdThunk = createAsyncThunk<string, string>(
-  "sybcategory/deleteById",
+  "subcategories/deleteById",
   async (id) => {
     await deleteSubcategory(id);
     return id;

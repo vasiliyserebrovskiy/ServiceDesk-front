@@ -8,11 +8,11 @@ export const CategoryValidation = Yup.object({
   name: Yup.string()
     .min(
       CATEGORY_NAME_MIN_LENGTH,
-      `Group name must be at least ${CATEGORY_NAME_MIN_LENGTH} characters`,
+      `Category name must be at least ${CATEGORY_NAME_MIN_LENGTH} characters`,
     )
     .max(
       CATEGORY_NAME_MAX_LENGTH,
-      `Group name must be at most ${CATEGORY_NAME_MAX_LENGTH} characters`,
+      `Category name must be at most ${CATEGORY_NAME_MAX_LENGTH} characters`,
     )
     .required(),
 
