@@ -45,12 +45,12 @@ export const createCategoryThunk = createAsyncThunk<
 });
 
 /**
- * Update category bu id
+ * Update category by id
  */
 export const updateCategoryByIdThunk = createAsyncThunk<
   Category,
   { id: string; data: UpdateCategoryDto }
->("category/update", async ({ id, data }) => {
+>("categories/update", async ({ id, data }) => {
   return await updateCategory(id, data);
 });
 
@@ -58,7 +58,7 @@ export const updateCategoryByIdThunk = createAsyncThunk<
  * Delete categoru by id
  */
 export const deleteCategoryByIdThunk = createAsyncThunk<string, string>(
-  "category/deleteById",
+  "categories/deleteById",
   async (id) => {
     await deleteCategory(id);
     return id;
@@ -69,7 +69,7 @@ export const deleteCategoryByIdThunk = createAsyncThunk<string, string>(
  * Get category by id
  */
 export const getCategoryByIdThunk = createAsyncThunk<Category, string>(
-  "category/getById",
+  "categories/getById",
   async (id) => {
     return await fetchCategoryById(id);
   },

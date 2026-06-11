@@ -8,11 +8,11 @@ export const SubcategoryValidation = Yup.object({
   name: Yup.string()
     .min(
       SUBCATEGORY_NAME_MIN_LENGTH,
-      `Group name must be at least ${SUBCATEGORY_NAME_MIN_LENGTH} characters`,
+      `Subcategory name must be at least ${SUBCATEGORY_NAME_MIN_LENGTH} characters`,
     )
     .max(
       SUBCATEGORY_NAME_MAX_LENGTH,
-      `Group name must be at most ${SUBCATEGORY_NAME_MAX_LENGTH} characters`,
+      `Subcategory name must be at most ${SUBCATEGORY_NAME_MAX_LENGTH} characters`,
     )
     .required(),
 

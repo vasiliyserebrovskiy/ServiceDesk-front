@@ -6,6 +6,7 @@ import usersReducer from "../features/users/usersSlice";
 import groupsReducer from "../features/groups/groupsSlice";
 import categoriesReducer from "../features/categories/categoriesSlice";
 import subcategoriesReducer from "../features/sybcategories/sybcategoriesSlice";
+import statusesReducer from "../features/statuses/statusesSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     groups: groupsReducer,
     categories: categoriesReducer,
     subcategories: subcategoriesReducer,
+    statuses: statusesReducer,
   },
 });
 

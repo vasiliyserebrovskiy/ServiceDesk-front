@@ -19,7 +19,7 @@ export default function UserMenuSection({ closeAll }: Props) {
           hover:text-blue-600
         "
       >
-        Users
+        User
       </button>
 
       {isOpen && (
@@ -38,7 +38,7 @@ export default function UserMenuSection({ closeAll }: Props) {
             // close the menu after selecting
             onClick={closeAll}
           >
-            Users List
+            User List
           </NavLink>
         </div>
       )}

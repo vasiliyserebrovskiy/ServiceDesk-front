@@ -20,7 +20,7 @@ export default function CategoriesMenuSection({ closeAll }: Props) {
           hover:text-blue-600
         "
       >
-        Categories
+        Category
       </button>
 
       {isOpen && (
@@ -38,7 +38,7 @@ export default function CategoriesMenuSection({ closeAll }: Props) {
             onClick={closeAll}
             className="hover:text-blue-600"
           >
-            Categories List
+            Category List
           </NavLink>
 
           <SubcategoriesMenuSection closeAll={closeAll} />

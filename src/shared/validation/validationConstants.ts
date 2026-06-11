@@ -8,6 +8,8 @@ export const CATEGORY_NAME_MIN_LENGTH = 2;
 export const CATEGORY_NAME_MAX_LENGTH = 255;
 export const SUBCATEGORY_NAME_MIN_LENGTH = 2;
 export const SUBCATEGORY_NAME_MAX_LENGTH = 255;
+export const STATUS_NAME_MIN_LENGTH = 2;
+export const STATUS_NAME_MAX_LENGTH = 255;
 
 export const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&*_+=\-/\\.,])[A-Za-z\d~!@#$%^&*_+=\-/\\.,]+$/;
