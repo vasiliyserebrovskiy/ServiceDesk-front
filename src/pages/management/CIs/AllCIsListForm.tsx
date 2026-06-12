@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useCIs } from "../../../shared/hooks/useCIs";
 import { useEffect } from "react";
-import { CIColumns } from "./ciColumns";
+import { CIColumns } from "./CIColumns";
 import { DataTable } from "../../../components/tables/DataTable";
 
 export default function AllCIsListForm() {
