@@ -1,6 +1,9 @@
 import AllCategoriesListForm from "../pages/management/categories/AllCategoriesListForm";
 import CategoryDetails from "../pages/management/categories/CategoryDetails";
 import CreateCategoryForm from "../pages/management/categories/CreateCategoryForm";
+import AllCIsListForm from "../pages/management/CIs/AllCIsListForm";
+import CIDetails from "../pages/management/CIs/CIDetails";
+import CreateCIForm from "../pages/management/CIs/CreateCIForm";
 import AllGroupsListForm from "../pages/management/groups/AllGroupsListForm";
 import CreateGroupForm from "../pages/management/groups/CreateGroupForm";
 import GroupDetails from "../pages/management/groups/GroupDetails";
@@ -106,6 +109,30 @@ export const managementRoutes = [
     element: (
       <ManagementRoute>
         <StatusDetails />
+      </ManagementRoute>
+    ),
+  },
+  {
+    path: "/cis/create",
+    element: (
+      <ManagementRoute>
+        <CreateCIForm />
+      </ManagementRoute>
+    ),
+  },
+  {
+    path: "/cis/all",
+    element: (
+      <ManagementRoute>
+        <AllCIsListForm />
+      </ManagementRoute>
+    ),
+  },
+  {
+    path: "/cis/:id",
+    element: (
+      <ManagementRoute>
+        <CIDetails />
       </ManagementRoute>
     ),
   },

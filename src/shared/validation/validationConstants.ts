@@ -10,6 +10,12 @@ export const SUBCATEGORY_NAME_MIN_LENGTH = 2;
 export const SUBCATEGORY_NAME_MAX_LENGTH = 255;
 export const STATUS_NAME_MIN_LENGTH = 2;
 export const STATUS_NAME_MAX_LENGTH = 255;
+export const CI_NAME_MIN_LENGTH = 2;
+export const CI_NAME_MAX_LENGTH = 255;
+export const CI_TYPE_MAX_LENGTH = 150;
+export const CI_MANUFACTURER_MAX_LENGTH = 150;
+export const CI_SERIAL_NUMBER_MAX_LENGTH = 150;
+export const CI_MODEL_MAX_LENGTH = 150;
 
 export const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&*_+=\-/\\.,])[A-Za-z\d~!@#$%^&*_+=\-/\\.,]+$/;
