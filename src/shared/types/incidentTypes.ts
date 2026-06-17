@@ -115,3 +115,30 @@ export type IncidentList = {
   servicenowSynced: boolean;
   servicenowSyncedAt: string;
 };
+
+export const impactOptions = [
+  { value: "LOW", label: "Low" },
+  { value: "MEDIUM", label: "Medium" },
+  { value: "HIGH", label: "High" },
+  { value: "CRITICAL", label: "Critical" },
+];
+
+export const urgencyOptions = [
+  { value: "LOW", label: "Low" },
+  { value: "MEDIUM", label: "Medium" },
+  { value: "HIGH", label: "High" },
+  { value: "CRITICAL", label: "Critical" },
+];
+
+export const calculatePriority = (impact: string, urgency: string): string => {
+  if (impact === "CRITICAL" || urgency === "CRITICAL") return "CRITICAL";
+  if (impact === "HIGH" && urgency === "HIGH") return "CRITICAL";
+  if (impact === "HIGH" && urgency === "MEDIUM") return "HIGH";
+  if (impact === "HIGH" && urgency === "LOW") return "MEDIUM";
+  if (impact === "MEDIUM" && urgency === "HIGH") return "HIGH";
+  if (impact === "MEDIUM" && urgency === "MEDIUM") return "MEDIUM";
+  if (impact === "MEDIUM" && urgency === "LOW") return "LOW";
+  if (impact === "LOW" && urgency === "HIGH") return "MEDIUM";
+  if (impact === "LOW" && urgency === "MEDIUM") return "LOW";
+  return "LOW";
+};

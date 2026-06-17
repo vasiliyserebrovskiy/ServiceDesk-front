@@ -47,6 +47,13 @@ export default function IncidentsMenuSection({ closeAll }: Props) {
           >
             Closed
           </NavLink>
+          <NavLink
+            to="/incidents/all"
+            onClick={closeAll}
+            className="hover:text-blue-600"
+          >
+            All Incidents
+          </NavLink>
         </div>
       )}
     </div>
