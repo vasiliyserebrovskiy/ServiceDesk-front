@@ -10,10 +10,22 @@ type Props = {
   name: string;
   className?: string;
   options: Option[];
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 
-function FormListField({ label, className = "", options, ...props }: Props) {
+function FormListField({
+  label,
+  className = "",
+  options,
+  onChange,
+  ...props
+}: Props) {
   const [field, meta] = useField(props);
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    field.onChange(e);
+    onChange?.(e);
+  };
 
   return (
     <div className="flex flex-col text-black">
@@ -23,6 +35,7 @@ function FormListField({ label, className = "", options, ...props }: Props) {
         as="select"
         {...field}
         {...props}
+        onChange={handleChange}
         className={`border p-2 rounded ${className}`}
       >
         {options.map((option) => (

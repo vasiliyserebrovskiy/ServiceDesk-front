@@ -16,6 +16,8 @@ export const CI_TYPE_MAX_LENGTH = 150;
 export const CI_MANUFACTURER_MAX_LENGTH = 150;
 export const CI_SERIAL_NUMBER_MAX_LENGTH = 150;
 export const CI_MODEL_MAX_LENGTH = 150;
+export const SHORT_DESCRIPTION_MIN_LENGTH = 10;
+export const SHORT_DESCRIPTION_MAX_LENGTH = 255;
 
 export const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&*_+=\-/\\.,])[A-Za-z\d~!@#$%^&*_+=\-/\\.,]+$/;
