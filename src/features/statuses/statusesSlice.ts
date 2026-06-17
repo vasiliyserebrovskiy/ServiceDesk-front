@@ -129,7 +129,7 @@ const statusesSlice = createSlice({
     });
 
     /**
-     * UPDATE STATUSES BY ID
+     * UPDATE STATUS BY ID
      */
     builder.addCase(updateStatusByIdThunk.fulfilled, (state, action) => {
       const updatedStatus = action.payload;
