@@ -8,6 +8,7 @@ type Option = {
 type Props = {
   label?: string;
   name: string;
+  required?: boolean;
   className?: string;
   options: Option[];
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -17,6 +18,7 @@ function FormListField({
   label,
   className = "",
   options,
+  required,
   onChange,
   ...props
 }: Props) {
@@ -29,7 +31,10 @@ function FormListField({
 
   return (
     <div className="flex flex-col text-black">
-      <label htmlFor={props.name}>{label}</label>
+      <label htmlFor={props.name}>
+        {label}
+        {required && <span className="text-red-500 ml-1">*</span>}
+      </label>
 
       <Field
         as="select"

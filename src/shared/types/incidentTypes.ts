@@ -142,3 +142,10 @@ export const calculatePriority = (impact: string, urgency: string): string => {
   if (impact === "LOW" && urgency === "MEDIUM") return "LOW";
   return "LOW";
 };
+
+export const priorityLabels: Record<string, string> = {
+  LOW: "Low",
+  MEDIUM: "Medium",
+  HIGH: "High",
+  CRITICAL: "Critical",
+};

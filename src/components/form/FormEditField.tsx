@@ -4,6 +4,7 @@ type Props = {
   label?: string;
   name: string;
   type?: string;
+  required?: boolean;
   fieldClassName?: string;
   divClassName?: string;
 };
@@ -11,6 +12,7 @@ type Props = {
 function FormEditField({
   label,
   fieldClassName = "",
+  required,
   divClassName = "flex flex-col text-black",
   ...props
 }: Props) {
@@ -18,7 +20,10 @@ function FormEditField({
 
   return (
     <div className={divClassName}>
-      <label htmlFor={props.name}>{label}</label>
+      <label htmlFor={props.name}>
+        {label}
+        {required && <span className="text-red-500 ml-1">*</span>}
+      </label>
 
       <Field
         {...field}
