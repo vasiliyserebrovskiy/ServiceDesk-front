@@ -84,7 +84,6 @@ export default function CreateIncidentPage() {
   if (!dependenciesLoaded) {
     return <div>Loading...</div>;
   }
-  //console.log(incidentNumber);
 
   const initialValues: IncidentCreateFormValues = {
     number: "",
@@ -157,16 +156,6 @@ export default function CreateIncidentPage() {
     })) || []),
   ];
 
-  // const subcategoryOptions = [
-  //   { value: "", label: "-- None --" },
-  //   ...(subcategories
-  //     ?.filter((s) => s.categoryId === values.categoryId)
-  //     .map((s) => ({
-  //       value: s.id,
-  //       label: s.name,
-  //     })) || []),
-  // ];
-
   const cisOptions = [
     { value: "", label: "" },
     ...(cis?.map((ci) => ({
@@ -182,14 +171,6 @@ export default function CreateIncidentPage() {
       label: g.name,
     })) || []),
   ];
-
-  // const assigneeOptions = [
-  //   { value: "", label: "-- None --" },
-  //   ...(users?.map((user) => ({
-  //     value: user.id,
-  //     label: user.firstname + " " + user.lastname,
-  //   })) || []),
-  // ];
 
   return (
     <div className="min-h-screen flex justify-center bg-gray-50">
