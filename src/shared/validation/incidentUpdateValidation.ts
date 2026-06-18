@@ -6,10 +6,10 @@ import {
 } from "./validationConstants";
 
 export const IncidentUpdateValidation = Yup.object({
-  requesterId: Yup.string().required(),
-  categoryId: Yup.string().required(),
+  requesterId: Yup.string().required("Requester is a required field"),
+  categoryId: Yup.string().required("Category is a required field"),
   subcategoryId: Yup.string(),
-  statusId: Yup.string().required(),
+  statusId: Yup.string().required("Status is a required field"),
   priority: Yup.string().required(),
   impact: Yup.string().required(),
   urgency: Yup.string().required(),
@@ -25,6 +25,6 @@ export const IncidentUpdateValidation = Yup.object({
       SHORT_DESCRIPTION_MAX_LENGTH,
       `Short description must be at most ${SHORT_DESCRIPTION_MAX_LENGTH} characters`,
     )
-    .required(),
+    .required("Shord description is a required field"),
   description: Yup.string(),
 });

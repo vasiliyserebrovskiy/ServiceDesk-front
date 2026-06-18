@@ -1,37 +1,68 @@
 import { useEffect, useState } from "react";
-import { useUsers } from "../../../shared/hooks/useUsers";
 import { useCategories } from "../../../shared/hooks/useCategories";
-import { useSubcategories } from "../../../shared/hooks/useSubcategories";
-import { useStatuses } from "../../../shared/hooks/useStatuses";
-import { useGroups } from "../../../shared/hooks/useGroups";
 import { useCIs } from "../../../shared/hooks/useCIs";
-import { useNavigate } from "react-router-dom";
-import { IncidentCreateValidation } from "../../../shared/validation/incidentCreateValidation";
-import { Formik, Form, type FormikHelpers } from "formik";
-import {
-  type IncidentCreateFormValues,
-  impactOptions,
-  urgencyOptions,
-  calculatePriority,
-  priorityLabels,
-} from "../../../shared/types/incidentTypes";
+import { useGroups } from "../../../shared/hooks/useGroups";
 import { useIncidents } from "../../../shared/hooks/useIncidents";
-import FormEditField from "../../../components/form/FormEditField";
+import { useStatuses } from "../../../shared/hooks/useStatuses";
+import { useSubcategories } from "../../../shared/hooks/useSubcategories";
+import { useUsers } from "../../../shared/hooks/useUsers";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  calculatePriority,
+  impactOptions,
+  priorityLabels,
+  urgencyOptions,
+  type Incident,
+  type IncidentUpdateFormValues,
+} from "../../../shared/types/incidentTypes";
+import { Form, Formik, type FormikHelpers } from "formik";
 import FormDescField from "../../../components/form/FormDescField";
-import FormReadOnlyField from "../../../components/form/FormReadOnlyField";
+import FormEditField from "../../../components/form/FormEditField";
 import FormListField from "../../../components/form/FormListField";
-import { fetchNextIncidentNumber } from "../../../features/incidents/incidentApi";
+import FormReadOnlyField from "../../../components/form/FormReadOnlyField";
+import { IncidentUpdateValidation } from "../../../shared/validation/incidentUpdateValidation";
 
-export default function CreateIncidentPage() {
-  const { createIncident } = useIncidents();
+export default function DetailsIncidentPage() {
+  const { id } = useParams();
+  const { incidents, getIncidentById, updateIncidentById } = useIncidents();
   const { users, loadUsers } = useUsers();
   const { categories, loadCategories } = useCategories();
   const { subcategories, loadSubcategories } = useSubcategories();
   const { statuses, loadStatuses } = useStatuses();
   const { groups, loadGroups } = useGroups();
   const { cis, loadCIs } = useCIs();
-  const [incidentNumber, setIncidentNumber] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [incident, setIncident] = useState<Incident | null>(null);
+
+  //Load incident data if neaded
+  useEffect(() => {
+    if (!id) return;
+
+    const incidentFromStore = incidents.find((i) => i.id === id);
+    let cancelled = false;
+    const load = async () => {
+      try {
+        if (incidentFromStore) {
+          setIncident(incidentFromStore);
+          return;
+        }
+
+        const data = await getIncidentById(id);
+
+        if (!cancelled) {
+          setIncident(data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    load();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [id, incidents, getIncidentById]);
 
   // Check if we need to load some data from dependency items
   useEffect(() => {
@@ -64,15 +95,6 @@ export default function CreateIncidentPage() {
     loadCIs,
   ]);
 
-  //Load incident number
-  useEffect(() => {
-    const loadNumber = async () => {
-      const response = await fetchNextIncidentNumber();
-      setIncidentNumber(response.number);
-    };
-    loadNumber();
-  }, []);
-
   const dependenciesLoaded =
     users.length > 0 &&
     categories.length > 0 &&
@@ -85,30 +107,34 @@ export default function CreateIncidentPage() {
     return <div>Loading...</div>;
   }
 
-  const initialValues: IncidentCreateFormValues = {
-    number: "",
-    requesterId: "",
-    categoryId: "",
-    subcategoryId: "",
-    statusId: "",
-    priority: "LOW",
-    impact: "LOW",
-    urgency: "LOW",
-    ciId: "",
-    groupId: "",
-    assigneeId: "",
-    shortDescription: "",
-    description: "",
+  if (!id) {
+    return <div>Invalid incident id</div>;
+  }
+
+  if (!incident) {
+    return <div>Loading incident...</div>;
+  }
+
+  const initialValues: IncidentUpdateFormValues = {
+    requesterId: incident.requesterId ?? "",
+    categoryId: incident.categoryId ?? "",
+    subcategoryId: incident.subcategoryId ?? "",
+    statusId: incident.statusId ?? "",
+    priority: incident.priority ?? "",
+    impact: incident.impact ?? "",
+    urgency: incident.urgency ?? "",
+    ciId: incident.ciId ?? "",
+    groupId: incident.groupId ?? "",
+    assigneeId: incident.assigneeId ?? "",
+    shortDescription: incident.shortDescription ?? "",
+    description: incident.description ?? "",
   };
 
-  if (!incidentNumber) return;
-
   const handleSubmit = async (
-    values: IncidentCreateFormValues,
-    { resetForm }: FormikHelpers<IncidentCreateFormValues>,
+    values: IncidentUpdateFormValues,
+    { resetForm }: FormikHelpers<IncidentUpdateFormValues>,
   ) => {
     const payload = {
-      number: incidentNumber,
       requesterId: values.requesterId,
       categoryId: values.categoryId,
       subcategoryId: values.subcategoryId,
@@ -124,7 +150,7 @@ export default function CreateIncidentPage() {
     };
     try {
       console.log(payload);
-      await createIncident(payload);
+      await updateIncidentById(id, payload);
       resetForm();
       navigate("/incidents/all");
     } catch (error) {
@@ -157,7 +183,7 @@ export default function CreateIncidentPage() {
   ];
 
   const cisOptions = [
-    { value: "", label: " -- None -- " },
+    { value: "", label: " -- None --" },
     ...(cis?.map((ci) => ({
       value: ci.id,
       label: ci.name,
@@ -174,31 +200,55 @@ export default function CreateIncidentPage() {
 
   return (
     <div className="min-h-screen flex justify-center bg-gray-50">
-      <div className="w-full max-w-3xl p-1">
+      <div className="w-full max-w-4xl p-1">
+        {/* TITLE */}
         <div className="flex bg-gray-200 p-2 items-center justify-between">
-          <h2 className="text-[#0d2b5c] text-lg font-bold">Create Incident</h2>
+          <h2 className="text-[#0d2b5c]  text-lg font-bold">Edit Incident</h2>
           <div className="flex gap-2">
             {/* CANCEL */}
             <button
               onClick={() => navigate("/incidents/all")}
-              className="bg-blue-600 text-white px-3 py-0.5 rounded cursor-pointer hover:bg-blue-800 active:scale-95 transition duration-150"
+              className="
+                    bg-blue-600
+                    text-white
+                    px-3
+                    py-0.5
+                    rounded
+                    cursor-pointer
+                    hover:bg-blue-800
+                    active:scale-95
+                    transition
+                    duration-150
+                  "
             >
               Cancel
             </button>
-            {/* SUBMIT */}
+            {/* UPDATE */}
             <button
               type="submit"
               form="incident-form"
-              className="bg-blue-600 text-white px-3 py-0.5 rounded cursor-pointer hover:bg-blue-800 active:scale-95 transition duration-150"
+              className="
+                    bg-blue-600
+                    text-white
+                    px-3
+                    py-0.5
+                    rounded
+                    cursor-pointer
+                    hover:bg-blue-800
+                    active:scale-95
+                    transition
+                    duration-150
+                  "
             >
-              Create
+              Update
             </button>
           </div>
         </div>
+        {/* FORM */}
         <Formik
           enableReinitialize
           initialValues={initialValues}
-          validationSchema={IncidentCreateValidation}
+          validationSchema={IncidentUpdateValidation}
           onSubmit={handleSubmit}
         >
           {({ values, setFieldValue }) => {
@@ -231,7 +281,7 @@ export default function CreateIncidentPage() {
                 {/* INCIDENT NUMBER */}
                 <FormReadOnlyField
                   label="Incident Number"
-                  value={incidentNumber}
+                  value={incident.number}
                 />
 
                 {/* STATUS */}

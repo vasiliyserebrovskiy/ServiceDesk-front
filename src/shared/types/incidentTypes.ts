@@ -99,16 +99,14 @@ export type IncidentUpdateFormValues = {
 export type IncidentList = {
   id: string;
   number: string;
-  requesterId: string;
-  categoryId: string;
-  subcategoryId: string;
-  statusId: string;
-  priority: string;
+  requesterName: string;
+  categoryName: string;
+  statusName: string;
+  priorityLabel: string;
   impact: string;
   urgency: string;
-  ciId: string;
-  groupId: string;
-  assigneeId: string;
+  groupName: string;
+  assigneeName: string;
   shortDescription: string;
   description: string;
   servicenowNumber: string;
@@ -116,6 +114,7 @@ export type IncidentList = {
   servicenowSyncedAt: string;
 };
 
+// Constants and functions for Incident form
 export const impactOptions = [
   { value: "LOW", label: "Low" },
   { value: "MEDIUM", label: "Medium" },
