@@ -13,6 +13,7 @@ import {
   impactOptions,
   urgencyOptions,
   calculatePriority,
+  priorityLabels,
 } from "../../../shared/types/incidentTypes";
 import { useIncidents } from "../../../shared/hooks/useIncidents";
 import FormEditField from "../../../components/form/FormEditField";
@@ -83,7 +84,6 @@ export default function CreateIncidentPage() {
   if (!dependenciesLoaded) {
     return <div>Loading...</div>;
   }
-  //console.log(incidentNumber);
 
   const initialValues: IncidentCreateFormValues = {
     number: "",
@@ -91,9 +91,9 @@ export default function CreateIncidentPage() {
     categoryId: "",
     subcategoryId: "",
     statusId: "",
-    priority: "",
-    impact: "",
-    urgency: "",
+    priority: "LOW",
+    impact: "LOW",
+    urgency: "LOW",
     ciId: "",
     groupId: "",
     assigneeId: "",
@@ -132,47 +132,45 @@ export default function CreateIncidentPage() {
     }
   };
   // OPTIONS VALUES FOR LISTS
-  const statusOptions =
-    statuses?.map((status) => ({
+  const statusOptions = [
+    { value: "", label: "" },
+    ...(statuses?.map((status) => ({
       value: status.id,
       label: status.name,
-    })) || [];
+    })) || []),
+  ];
 
-  const requesterOptions =
-    users?.map((user) => ({
+  const requesterOptions = [
+    { value: "", label: "" },
+    ...(users?.map((user) => ({
       value: user.id,
       label: user.firstname + " " + user.lastname,
-    })) || [];
+    })) || []),
+  ];
 
-  const categoryOptions =
-    categories?.map((c) => ({
+  const categoryOptions = [
+    { value: "", label: "" },
+    ...(categories?.map((c) => ({
       value: c.id,
       label: c.name,
-    })) || [];
+    })) || []),
+  ];
 
-  const subcategoryOptions =
-    subcategories?.map((s) => ({
-      value: s.id,
-      label: s.name,
-    })) || [];
-
-  const cisOptions =
-    cis?.map((ci) => ({
+  const cisOptions = [
+    { value: "", label: "" },
+    ...(cis?.map((ci) => ({
       value: ci.id,
       label: ci.name,
-    })) || [];
+    })) || []),
+  ];
 
-  const groupOptions =
-    groups?.map((g) => ({
+  const groupOptions = [
+    { value: "", label: "-- None --" },
+    ...(groups?.map((g) => ({
       value: g.id,
       label: g.name,
-    })) || [];
-
-  const assigneeOptions =
-    users?.map((user) => ({
-      value: user.id,
-      label: user.firstname + " " + user.lastname,
-    })) || [];
+    })) || []),
+  ];
 
   return (
     <div className="min-h-screen flex justify-center bg-gray-50">
@@ -203,107 +201,150 @@ export default function CreateIncidentPage() {
           validationSchema={IncidentCreateValidation}
           onSubmit={handleSubmit}
         >
-          {({ values, setFieldValue }) => (
-            <Form id="incident-form" className="grid grid-cols-2 gap-4 mt-5">
-              {/* INCIDENT NUMBER */}
-              <FormReadOnlyField
-                label="Incident Number"
-                value={incidentNumber}
-              />
+          {({ values, setFieldValue }) => {
+            const subcategoryOptions = [
+              { value: "", label: "-- None --" },
+              ...(subcategories
+                ?.filter((s) => s.categoryId === values.categoryId)
+                .map((s) => ({
+                  value: s.id,
+                  label: s.name,
+                })) || []),
+            ];
 
-              {/* STATUS */}
-              <FormListField
-                label="Status"
-                name="statusId"
-                options={statusOptions}
-              />
+            const assigneeOptions = [
+              { value: "", label: "-- None --" },
+              ...(users
+                ?.filter((u) => {
+                  if (!values.groupId) return true;
+                  const group = groups.find((g) => g.id === values.groupId);
+                  return group?.userIds?.includes(u.id);
+                })
+                .map((u) => ({
+                  value: u.id,
+                  label: u.firstname + " " + u.lastname,
+                })) || []),
+            ];
 
-              {/* REQUESTER */}
-              <FormListField
-                label="Requester"
-                name="requesterId"
-                options={requesterOptions}
-              />
+            return (
+              <Form id="incident-form" className="grid grid-cols-2 gap-4 mt-5">
+                {/* INCIDENT NUMBER */}
+                <FormReadOnlyField
+                  label="Incident Number"
+                  value={incidentNumber}
+                />
 
-              {/* IMPACT */}
-              <FormListField
-                label="Impact"
-                name="impact"
-                options={impactOptions}
-                onChange={(e) => {
-                  setFieldValue("impact", e.target.value);
-                  setFieldValue(
-                    "priority",
-                    calculatePriority(e.target.value, values.urgency),
-                  );
-                }}
-              />
+                {/* STATUS */}
+                <FormListField
+                  label="Status"
+                  name="statusId"
+                  options={statusOptions}
+                  required={true}
+                />
 
-              {/* CATEGORY */}
-              <FormListField
-                label="Category"
-                name="categoryId"
-                options={categoryOptions}
-              />
+                {/* REQUESTER */}
+                <FormListField
+                  label="Requester"
+                  name="requesterId"
+                  options={requesterOptions}
+                  required={true}
+                />
 
-              {/* IMPACT */}
-              <FormListField
-                label="Urgency"
-                name="urgency"
-                options={urgencyOptions}
-                onChange={(e) => {
-                  setFieldValue("urgency", e.target.value);
-                  setFieldValue(
-                    "priority",
-                    calculatePriority(values.impact, e.target.value),
-                  );
-                }}
-              />
+                {/* IMPACT */}
+                <FormListField
+                  label="Impact"
+                  name="impact"
+                  options={impactOptions}
+                  onChange={(e) => {
+                    setFieldValue("impact", e.target.value);
+                    setFieldValue(
+                      "priority",
+                      calculatePriority(e.target.value, values.urgency),
+                    );
+                  }}
+                />
 
-              {/* SUBCATEGORY */}
-              <FormListField
-                label="Subcategory"
-                name="subcategoryId"
-                options={subcategoryOptions}
-              />
+                {/* CATEGORY */}
+                <FormListField
+                  label="Category"
+                  name="categoryId"
+                  options={categoryOptions}
+                  required={true}
+                  onChange={(e) => {
+                    setFieldValue("categoryId", e.target.value);
+                    setFieldValue("subcategoryId", "");
+                  }}
+                />
 
-              {/* PRIORITY */}
-              <FormReadOnlyField label="Priority" value={values.priority} />
+                {/* URGENCY */}
+                <FormListField
+                  label="Urgency"
+                  name="urgency"
+                  options={urgencyOptions}
+                  onChange={(e) => {
+                    setFieldValue("urgency", e.target.value);
+                    setFieldValue(
+                      "priority",
+                      calculatePriority(values.impact, e.target.value),
+                    );
+                  }}
+                />
 
-              {/* CI */}
-              <FormListField
-                label="Configuration Item"
-                name="ciId"
-                options={cisOptions}
-              />
+                {/* SUBCATEGORY */}
+                <FormListField
+                  label="Subcategory"
+                  name="subcategoryId"
+                  options={subcategoryOptions}
+                />
 
-              {/* Group */}
-              <FormListField
-                label="Group"
-                name="groupId"
-                options={groupOptions}
-              />
-              {/* blank block */}
-              <div></div>
+                {/* PRIORITY */}
+                <FormReadOnlyField
+                  label="Priority"
+                  value={priorityLabels[values.priority] ?? values.priority}
+                />
 
-              {/* ASSIGNEE */}
-              <FormListField
-                label="Assignee"
-                name="assigneeId"
-                options={assigneeOptions}
-              />
+                {/* CI */}
+                <FormListField
+                  label="Configuration Item"
+                  name="ciId"
+                  options={cisOptions}
+                  required={true}
+                />
 
-              {/* SHORT DESCRIPTION */}
-              <FormEditField
-                label="Short Description"
-                name="shortDescription"
-                divClassName="col-span-2 flex flex-col text-black"
-              />
+                {/* GROUP */}
+                <FormListField
+                  label="Group"
+                  name="groupId"
+                  options={groupOptions}
+                  onChange={(e) => {
+                    setFieldValue("groupId", e.target.value);
+                    setFieldValue("assigneeId", "");
+                  }}
+                />
 
-              {/* DESCRIPTION */}
-              <FormDescField label="Description" name="description" />
-            </Form>
-          )}
+                {/* blank block */}
+                <div></div>
+
+                {/* ASSIGNEE */}
+                <FormListField
+                  label="Assignee"
+                  name="assigneeId"
+                  options={assigneeOptions}
+                />
+
+                {/* SHORT DESCRIPTION */}
+                <FormEditField
+                  label="Short Description"
+                  name="shortDescription"
+                  divClassName="col-span-2 flex flex-col text-black"
+                  required={true}
+                />
+
+                {/* DESCRIPTION */}
+                <FormDescField label="Description" name="description" />
+              </Form>
+            );
+          }}
         </Formik>
       </div>
     </div>
