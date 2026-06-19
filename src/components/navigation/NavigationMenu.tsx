@@ -10,7 +10,6 @@ import ManagementMenu from "./ManagementMenu";
 export default function NavigationMenu() {
   const { user } = useAppSelector((state) => state.auth);
   const { roles } = useRoles();
-
   const roleName = roles?.find((r) => r.id === user?.roleId)?.name;
 
   return (

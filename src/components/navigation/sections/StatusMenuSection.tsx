@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import MenuArrow from "../MenuArrow";
 
 type Props = {
   closeAll: () => void;
@@ -19,7 +20,7 @@ export default function StatusMenuSection({ closeAll }: Props) {
           hover:text-blue-600
         "
       >
-        Status
+        <MenuArrow label="Status" isOpen={isOpen} />
       </button>
 
       {isOpen && (

@@ -21,6 +21,10 @@ import FormDescField from "../../../components/form/FormDescField";
 import FormReadOnlyField from "../../../components/form/FormReadOnlyField";
 import FormListField from "../../../components/form/FormListField";
 import { fetchNextIncidentNumber } from "../../../features/incidents/incidentApi";
+import {
+  toNullableSelectOptions,
+  toSelectOptions,
+} from "../../../shared/utils/selectOptions";
 
 export default function CreateIncidentPage() {
   const { createIncident } = useIncidents();
@@ -123,54 +127,22 @@ export default function CreateIncidentPage() {
       description: values.description,
     };
     try {
-      console.log(payload);
       await createIncident(payload);
       resetForm();
-      navigate("/incidents/all");
+      navigate("/incidents/open");
     } catch (error) {
       console.log(error);
     }
   };
   // OPTIONS VALUES FOR LISTS
-  const statusOptions = [
-    { value: "", label: "" },
-    ...(statuses?.map((status) => ({
-      value: status.id,
-      label: status.name,
-    })) || []),
-  ];
-
-  const requesterOptions = [
-    { value: "", label: "" },
-    ...(users?.map((user) => ({
-      value: user.id,
-      label: user.firstname + " " + user.lastname,
-    })) || []),
-  ];
-
-  const categoryOptions = [
-    { value: "", label: "" },
-    ...(categories?.map((c) => ({
-      value: c.id,
-      label: c.name,
-    })) || []),
-  ];
-
-  const cisOptions = [
-    { value: "", label: " -- None -- " },
-    ...(cis?.map((ci) => ({
-      value: ci.id,
-      label: ci.name,
-    })) || []),
-  ];
-
-  const groupOptions = [
-    { value: "", label: "-- None --" },
-    ...(groups?.map((g) => ({
-      value: g.id,
-      label: g.name,
-    })) || []),
-  ];
+  const statusOptions = toSelectOptions(statuses, (s) => s.name);
+  const requesterOptions = toSelectOptions(
+    users,
+    (u) => `${u.firstname} ${u.lastname}`,
+  );
+  const categoryOptions = toSelectOptions(categories, (c) => c.name);
+  const cisOptions = toNullableSelectOptions(cis, (ci) => ci.name);
+  const groupOptions = toNullableSelectOptions(groups, (g) => g.name);
 
   return (
     <div className="min-h-screen flex justify-center bg-gray-50">
@@ -180,7 +152,7 @@ export default function CreateIncidentPage() {
           <div className="flex gap-2">
             {/* CANCEL */}
             <button
-              onClick={() => navigate("/incidents/all")}
+              onClick={() => navigate("/incidents/open")}
               className="bg-blue-600 text-white px-3 py-0.5 rounded cursor-pointer hover:bg-blue-800 active:scale-95 transition duration-150"
             >
               Cancel

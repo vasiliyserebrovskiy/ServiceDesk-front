@@ -8,8 +8,14 @@ import { useGroups } from "../../../shared/hooks/useGroups";
 import { DataTable } from "../../../components/tables/DataTable";
 import { incidentsColumns } from "./incidentsColumns";
 import { priorityLabels } from "../../../shared/types/incidentTypes";
+import { useAppSelector } from "../../../app/hooks";
 
-export default function AllIncidentsPage() {
+type Props = {
+  filter?: "open" | "closed" | "my-open" | "my-closed";
+};
+
+export default function AllIncidentsPage({ filter }: Props) {
+  const { user } = useAppSelector((state) => state.auth);
   const { incidents, loading, loadIncidents } = useIncidents();
   const { users, loadUsers } = useUsers();
   const { categories, loadCategories } = useCategories();
@@ -72,6 +78,14 @@ export default function AllIncidentsPage() {
           ? `${assignee.firstname} ${assignee.lastname}`
           : "(empty)",
         priorityLabel: priorityLabels[incident.priority] ?? incident.priority,
+        openDate: new Date(incident.createdAt).toLocaleString("de-DE", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        }),
       };
     });
   }, [incidents, users, categories, statuses, groups]);
@@ -80,6 +94,16 @@ export default function AllIncidentsPage() {
   if (loading) {
     return <div>Loadimg incidents...</div>;
   }
+
+  const filtered = enrichedIncidents.filter((i) => {
+    if (filter === "open") return i.statusName !== "Closed";
+    if (filter === "closed") return i.statusName === "Closed";
+    if (filter === "my-open")
+      return i.assigneeId === user?.id && i.statusName !== "Closed";
+    if (filter === "my-closed")
+      return i.assigneeId === user?.id && i.statusName === "Closed";
+    return true;
+  });
 
   return (
     <div className="flex flex-col min-h-screen px-6 bg-gray-50">
@@ -97,12 +121,10 @@ export default function AllIncidentsPage() {
       </div>
       <div className="flex">
         <DataTable
-          data={enrichedIncidents}
+          data={filtered}
           columns={incidentsColumns}
-          getRowId={(enrichedIncidents) => enrichedIncidents.id}
-          getDetailsLink={(enrichedIncident) =>
-            `/incidents/${enrichedIncident.id}`
-          }
+          getRowId={(filtered) => filtered.id}
+          getDetailsLink={(filtered) => `/incidents/${filtered.id}`}
         />
       </div>
     </div>
