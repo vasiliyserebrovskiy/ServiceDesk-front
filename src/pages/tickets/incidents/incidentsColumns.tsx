@@ -5,7 +5,10 @@ export const incidentsColumns = [
     title: "Number",
     render: (incident: IncidentList) => incident.number,
   },
-  //   TODO:Opened date
+  {
+    title: "Opened",
+    render: (incident: IncidentList) => incident.openDate,
+  },
   {
     title: "Short description",
     render: (incident: IncidentList) => incident.shortDescription,
@@ -16,7 +19,20 @@ export const incidentsColumns = [
   },
   {
     title: "Priority",
-    render: (incident: IncidentList) => incident.priorityLabel,
+    render: (incident: IncidentList) => {
+      const colors: Record<string, string> = {
+        LOW: "text-gray-400",
+        MEDIUM: "text-blue-500",
+        HIGH: "text-yellow-500",
+        CRITICAL: "text-red-500",
+      };
+      return (
+        <span className="flex items-center gap-2">
+          <span className={`${colors[incident.priority] ?? ""}`}>●</span>
+          {incident.priorityLabel}
+        </span>
+      );
+    },
   },
   {
     title: "Status",

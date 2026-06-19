@@ -1,13 +1,11 @@
-import OpenIncidentsPage from "../pages/tickets/incidents/OpenIncidentsPage";
 import CreateIncidentPage from "../pages/tickets/incidents/CreateIncidentPage";
-import ClosedIncidentsPage from "../pages/tickets/incidents/ClosedIncidentsPage";
 import AllIncidentsPage from "../pages/tickets/incidents/AllIncidentsPage";
 import DetailsIncidentPage from "../pages/tickets/incidents/DetailsIncidentPage";
 
 export const incidentRoutes = [
   {
     path: "/incidents/open",
-    element: <OpenIncidentsPage />,
+    element: <AllIncidentsPage filter="open" />,
   },
   {
     path: "/incidents/create",
@@ -15,7 +13,7 @@ export const incidentRoutes = [
   },
   {
     path: "/incidents/closed",
-    element: <ClosedIncidentsPage />,
+    element: <AllIncidentsPage filter="closed" />,
   },
   {
     path: "/incidents/all",
@@ -24,5 +22,13 @@ export const incidentRoutes = [
   {
     path: "/incidents/:id",
     element: <DetailsIncidentPage />,
+  },
+  {
+    path: "/incidents/my/open",
+    element: <AllIncidentsPage filter="my-open" />,
+  },
+  {
+    path: "/incidents/my/closed",
+    element: <AllIncidentsPage filter="my-closed" />,
   },
 ];

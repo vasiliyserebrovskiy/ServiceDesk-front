@@ -6,7 +6,7 @@ type Props = {
   closeAll: () => void;
 };
 
-export default function ProblemsMenuSection({ closeAll }: Props) {
+export default function MyIncidentsMenuSection({ closeAll }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -20,33 +20,25 @@ export default function ProblemsMenuSection({ closeAll }: Props) {
           hover:text-blue-600
         "
       >
-        <MenuArrow label="Problems" isOpen={isOpen} />
+        <MenuArrow label="My Incidents" isOpen={isOpen} />
       </button>
 
       {isOpen && (
         <div className="ml-4 mt-2 flex flex-col gap-1">
           <NavLink
-            to="/problems/create"
+            to="/incidents/my/open"
             onClick={closeAll}
             className="hover:text-blue-600"
           >
-            Create New
+            My open incidents
           </NavLink>
 
           <NavLink
-            to="/problems/open"
+            to="/incidents/my/closed"
             onClick={closeAll}
             className="hover:text-blue-600"
           >
-            Open
-          </NavLink>
-
-          <NavLink
-            to="/problems/closed"
-            onClick={closeAll}
-            className="hover:text-blue-600"
-          >
-            Closed
+            My closed incidents
           </NavLink>
         </div>
       )}

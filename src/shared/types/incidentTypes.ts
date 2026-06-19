@@ -16,6 +16,7 @@ export interface Incident {
   servicenowNumber: string;
   servicenowSynced: boolean;
   servicenowSyncedAt: string;
+  createdAt: string;
 }
 
 export type NextIncidentNumber = {
@@ -102,6 +103,7 @@ export type IncidentList = {
   requesterName: string;
   categoryName: string;
   statusName: string;
+  priority: string;
   priorityLabel: string;
   impact: string;
   urgency: string;
@@ -112,6 +114,7 @@ export type IncidentList = {
   servicenowNumber: string;
   servicenowSynced: boolean;
   servicenowSyncedAt: string;
+  openDate: string;
 };
 
 // Constants and functions for Incident form
@@ -143,8 +146,8 @@ export const calculatePriority = (impact: string, urgency: string): string => {
 };
 
 export const priorityLabels: Record<string, string> = {
-  LOW: "Low",
-  MEDIUM: "Medium",
-  HIGH: "High",
-  CRITICAL: "Critical",
+  LOW: "4 - Low",
+  MEDIUM: "3 - Medium",
+  HIGH: "2 - High",
+  CRITICAL: "1 - Critical",
 };

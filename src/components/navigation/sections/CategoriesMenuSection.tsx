@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import SubcategoriesMenuSection from "./SubcategoriesMenuSection";
+import MenuArrow from "../MenuArrow";
 
 type Props = {
   closeAll: () => void;
@@ -20,7 +21,7 @@ export default function CategoriesMenuSection({ closeAll }: Props) {
           hover:text-blue-600
         "
       >
-        Category
+        <MenuArrow label="Category" isOpen={isOpen} />
       </button>
 
       {isOpen && (

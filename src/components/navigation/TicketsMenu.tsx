@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import IncidentsMenuSection from "./sections/IncidentsMenuSection";
+import MyIncidentsMenuSection from "./sections/MyIncidentsMenuSection";
 // import ProblemsMenuSection from "./sections/ProblemsMenuSection";
 
 export default function TicketsMenu() {
@@ -40,7 +41,7 @@ export default function TicketsMenu() {
           hover:text-blue-600
         "
       >
-        Tickets
+        Service Desk
       </button>
 
       {/* DROPDOWN */}
@@ -60,6 +61,7 @@ export default function TicketsMenu() {
             z-50
           "
         >
+          <MyIncidentsMenuSection closeAll={closeAll} />
           <IncidentsMenuSection closeAll={closeAll} />
 
           {/* <ProblemsMenuSection closeAll={closeAll} /> */}
