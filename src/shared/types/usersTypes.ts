@@ -44,6 +44,7 @@ export type UserFormValues = {
 };
 
 export type UsersList = {
+  id: string;
   name: string;
   email: string;
   roleName: string;

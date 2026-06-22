@@ -36,6 +36,7 @@ export type GroupFormValues = {
 };
 
 export type GroupList = {
+  id: string;
   name: string;
   description: string;
 };
