@@ -30,7 +30,7 @@ export const updateUser = async (
   id: string,
   payload: UpdateUserDto,
 ): Promise<User> => {
-  const { data } = await api.patch<User>(`/v1/users/${id}`, payload);
+  const { data } = await api.put<User>(`/v1/users/${id}`, payload);
   return data;
 };
 
