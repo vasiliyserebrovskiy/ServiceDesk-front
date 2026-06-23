@@ -24,7 +24,7 @@ export const updateGroup = async (
   id: string,
   payload: UpdateGroupDto,
 ): Promise<Group> => {
-  const { data } = await api.patch(`/v1/groups/${id}`, payload);
+  const { data } = await api.put(`/v1/groups/${id}`, payload);
   return data;
 };
 
