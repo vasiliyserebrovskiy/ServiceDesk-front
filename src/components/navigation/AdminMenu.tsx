@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import RoleMenuSection from "./sections/RoleMenuSection";
 import UserMenuSection from "./sections/UserMenuSection";
+import ServiceNowSettingsSection from "./sections/ServiceNowSettingsSection";
 
 export default function AdminMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -62,6 +63,7 @@ export default function AdminMenu() {
         >
           <RoleMenuSection closeAll={closeAll} />
           <UserMenuSection closeAll={closeAll} />
+          <ServiceNowSettingsSection closeAll={closeAll} />
         </div>
       )}
     </div>
