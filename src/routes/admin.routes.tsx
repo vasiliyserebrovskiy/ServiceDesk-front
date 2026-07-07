@@ -4,6 +4,8 @@ import { RolesList } from "../pages/administration/roles/RoleList";
 import AdminRoute from "./AdminRoute";
 import UserDetailsAdmin from "../pages/administration/users/UserDetailsAdmin";
 import ResetUserPasswordAdmin from "../pages/administration/users/ResetUserPasswordAdmin";
+import ServiceNowSettings from "../pages/administration/servicenowSettings/ServiceNowSettings";
+import UpdateServiceNowSettings from "../pages/administration/servicenowSettings/UpdateServiceNowSettings";
 
 export const adminRoutes = [
   {
@@ -43,6 +45,22 @@ export const adminRoutes = [
     element: (
       <AdminRoute>
         <ResetUserPasswordAdmin />
+      </AdminRoute>
+    ),
+  },
+  {
+    path: "admin/servicenowsettings",
+    element: (
+      <AdminRoute>
+        <ServiceNowSettings />
+      </AdminRoute>
+    ),
+  },
+  {
+    path: "admin/servicenowsettings/edit",
+    element: (
+      <AdminRoute>
+        <UpdateServiceNowSettings />
       </AdminRoute>
     ),
   },

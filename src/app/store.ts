@@ -9,6 +9,7 @@ import subcategoriesReducer from "../features/sybcategories/sybcategoriesSlice";
 import statusesReducer from "../features/statuses/statusesSlice";
 import cisReducer from "../features/cis/cisSlice";
 import incidentsReducer from "../features/incidents/incidentSlice";
+import servicenowSettingsReducer from "../features/servicenowSettings/servicenowSettingsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
     statuses: statusesReducer,
     cis: cisReducer,
     incidents: incidentsReducer,
+    servicenowSettings: servicenowSettingsReducer,
   },
 });
 
