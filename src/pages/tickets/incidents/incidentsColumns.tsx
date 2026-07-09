@@ -1,4 +1,6 @@
+import Tooltip from "../../../components/tooltip/Tooltip";
 import type { IncidentList } from "../../../shared/types/incidentTypes";
+import { Cloud, CloudOff } from "lucide-react";
 
 export const incidentsColumns = [
   {
@@ -9,6 +11,40 @@ export const incidentsColumns = [
     title: "Opened",
     render: (incident: IncidentList) => incident.openDate,
   },
+  {
+    title: "ServiceNow",
+    render: (incident: IncidentList) => {
+      const isSynced = incident.servicenowSynced;
+
+      const syncedAtLabel = incident.servicenowSyncedAt
+        ? new Date(incident.servicenowSyncedAt).toLocaleString("de-DE", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          })
+        : null;
+
+      const tooltip = isSynced
+        ? `Synced as ${incident.servicenowNumber ?? "—"}${syncedAtLabel ? ` on ${syncedAtLabel}` : ""}`
+        : "Not synced to ServiceNow";
+
+      return (
+        <Tooltip content={tooltip}>
+          <span className="inline-flex cursor-help">
+            {isSynced ? (
+              <Cloud className="w-4 h-4 text-green-500" />
+            ) : (
+              <CloudOff className="w-4 h-4 text-gray-300" />
+            )}
+          </span>
+        </Tooltip>
+      );
+    },
+  },
+
   {
     title: "Short description",
     render: (incident: IncidentList) => incident.shortDescription,

@@ -343,8 +343,11 @@ export default function DetailsIncidentPage() {
                   }}
                 />
 
-                {/* blank block */}
-                <div></div>
+                {/* SERVICENOW SYNC STATUS */}
+                <FormReadOnlyField
+                  label="ServiceNow Sync"
+                  value={incident.servicenowSynced ? "Synced" : "Not synced"}
+                />
 
                 {/* ASSIGNEE */}
                 <FormListField
@@ -352,6 +355,35 @@ export default function DetailsIncidentPage() {
                   name="assigneeId"
                   options={assigneeOptions}
                 />
+
+                {incident.servicenowSynced && (
+                  <>
+                    {/* SERVICENOW NUMBER */}
+                    <FormReadOnlyField
+                      label="ServiceNow Number"
+                      value={incident.servicenowNumber ?? "-"}
+                    />
+
+                    {/* SERVICENOW SYNCED AT */}
+                    <FormReadOnlyField
+                      label="Synced At"
+                      value={
+                        incident.servicenowSyncedAt
+                          ? new Date(
+                              incident.servicenowSyncedAt,
+                            ).toLocaleString("de-DE", {
+                              day: "2-digit",
+                              month: "2-digit",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: false,
+                            })
+                          : "-"
+                      }
+                    />
+                  </>
+                )}
 
                 {/* SHORT DESCRIPTION */}
                 <FormEditField
