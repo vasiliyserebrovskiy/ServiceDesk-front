@@ -13,9 +13,9 @@ export interface Incident {
   assigneeId: string;
   shortDescription: string;
   description: string;
-  servicenowNumber: string;
+  servicenowNumber: string | null;
   servicenowSynced: boolean;
-  servicenowSyncedAt: string;
+  servicenowSyncedAt: string | null;
   createdAt: string;
 }
 
@@ -111,9 +111,9 @@ export type IncidentList = {
   assigneeName: string;
   shortDescription: string;
   description: string;
-  servicenowNumber: string;
+  servicenowNumber: string | null;
   servicenowSynced: boolean;
-  servicenowSyncedAt: string;
+  servicenowSyncedAt: string | null;
   openDate: string;
 };
 
