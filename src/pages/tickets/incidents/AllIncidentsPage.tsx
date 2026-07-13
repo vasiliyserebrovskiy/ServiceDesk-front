@@ -25,10 +25,8 @@ export default function AllIncidentsPage({ filter }: Props) {
 
   /**  1. check if incidents list are loaded. If nit load it */
   useEffect(() => {
-    if (!incidents.length) {
-      loadIncidents();
-    }
-  }, [incidents.length, loadIncidents]);
+    loadIncidents();
+  }, [loadIncidents]);
 
   /**  2. Check if we need to load some data from dependency items */
   useEffect(() => {
@@ -92,7 +90,7 @@ export default function AllIncidentsPage({ filter }: Props) {
 
   /** 4 Loading state */
   if (loading) {
-    return <div>Loadimg incidents...</div>;
+    return <div>Loading incidents...</div>;
   }
 
   const filtered = enrichedIncidents.filter((i) => {

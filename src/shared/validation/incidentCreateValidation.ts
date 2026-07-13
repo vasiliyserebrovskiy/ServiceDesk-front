@@ -28,4 +28,5 @@ export const IncidentCreateValidation = Yup.object({
     )
     .required("Shord description is a required field"),
   description: Yup.string(),
+  syncToServiceNow: Yup.boolean(),
 });

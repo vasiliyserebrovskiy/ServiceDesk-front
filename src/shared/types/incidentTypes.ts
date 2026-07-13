@@ -37,6 +37,7 @@ export type CreateIncidentDto = {
   assigneeId: string;
   shortDescription: string;
   description: string;
+  syncToServiceNow: boolean;
 };
 
 export type UpdateIncidentDto = {
@@ -80,6 +81,7 @@ export type IncidentCreateFormValues = {
   assigneeId: string;
   shortDescription: string;
   description: string;
+  syncToServiceNow: boolean;
 };
 
 export type IncidentUpdateFormValues = {
