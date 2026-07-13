@@ -103,6 +103,7 @@ export default function CreateIncidentPage() {
     assigneeId: "",
     shortDescription: "",
     description: "",
+    syncToServiceNow: true,
   };
 
   if (!incidentNumber) return;
@@ -125,6 +126,7 @@ export default function CreateIncidentPage() {
       assigneeId: values.assigneeId,
       shortDescription: values.shortDescription,
       description: values.description,
+      syncToServiceNow: values.syncToServiceNow,
     };
     try {
       await createIncident(payload);
@@ -293,8 +295,20 @@ export default function CreateIncidentPage() {
                   }}
                 />
 
-                {/* blank block */}
-                <div></div>
+                {/* Sync with ServiceNow flag */}
+                <div className="flex items-center">
+                  <label className="flex items-center gap-2 text-black">
+                    <input
+                      type="checkbox"
+                      checked={values.syncToServiceNow}
+                      onChange={(e) =>
+                        setFieldValue("syncToServiceNow", e.target.checked)
+                      }
+                      className="w-4 h-4"
+                    />
+                    Sync in ServiceNow
+                  </label>
+                </div>
 
                 {/* ASSIGNEE */}
                 <FormListField
