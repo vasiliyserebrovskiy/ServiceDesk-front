@@ -129,9 +129,11 @@ export default function CreateIncidentPage() {
       syncToServiceNow: values.syncToServiceNow,
     };
     try {
-      await createIncident(payload);
+      const created = await createIncident(payload);
       resetForm();
-      navigate("/incidents/open");
+      navigate(`/incidents/${created.id}`, {
+        state: { justCreatedWithSync: values.syncToServiceNow },
+      });
     } catch (error) {
       console.log(error);
     }
