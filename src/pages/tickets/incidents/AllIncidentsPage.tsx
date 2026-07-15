@@ -11,7 +11,7 @@ import { priorityLabels } from "../../../shared/types/incidentTypes";
 import { useAppSelector } from "../../../app/hooks";
 
 type Props = {
-  filter?: "open" | "closed" | "my-open" | "my-closed";
+  filter?: "open" | "closed" | "my-open" | "my-closed" | "my-assigned";
 };
 
 export default function AllIncidentsPage({ filter }: Props) {
@@ -97,9 +97,14 @@ export default function AllIncidentsPage({ filter }: Props) {
     if (filter === "open") return i.statusName !== "Closed";
     if (filter === "closed") return i.statusName === "Closed";
     if (filter === "my-open")
-      return i.assigneeId === user?.id && i.statusName !== "Closed";
+      return i.requesterId === user?.id && i.statusName !== "Closed";
     if (filter === "my-closed")
-      return i.assigneeId === user?.id && i.statusName === "Closed";
+      return (
+        (i.requesterId === user?.id || i.assigneeId === user?.id) &&
+        i.statusName === "Closed"
+      );
+    if (filter === "my-assigned")
+      return i.assigneeId === user?.id && i.statusName !== "Closed";
     return true;
   });
 

@@ -30,7 +30,15 @@ export default function MyIncidentsMenuSection({ closeAll }: Props) {
             onClick={closeAll}
             className="hover:text-blue-600"
           >
-            My open incidents
+            Open
+          </NavLink>
+
+          <NavLink
+            to="/incidents/my/assigned"
+            onClick={closeAll}
+            className="hover:text-blue-600"
+          >
+            Assigned to me
           </NavLink>
 
           <NavLink
@@ -38,7 +46,7 @@ export default function MyIncidentsMenuSection({ closeAll }: Props) {
             onClick={closeAll}
             className="hover:text-blue-600"
           >
-            My closed incidents
+            Closed
           </NavLink>
         </div>
       )}
