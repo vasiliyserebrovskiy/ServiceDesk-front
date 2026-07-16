@@ -78,8 +78,7 @@ export default function DetailsIncidentPage() {
 
   // Poll for ServiceNow sync status right after creation, if sync was requested
   useEffect(() => {
-    if (!justCreatedWithSync || !id || !incident) return;
-    if (incident.servicenowSynced) return;
+    if (!justCreatedWithSync || !id) return;
 
     const maxAttempts = 10;
     let attempts = 0;
@@ -98,7 +97,7 @@ export default function DetailsIncidentPage() {
           }
         }
       } catch (error) {
-        console.log(error);
+        console.log(`[poll] error`, error);
         clearInterval(intervalId);
         setPollingExhausted(true);
       }
