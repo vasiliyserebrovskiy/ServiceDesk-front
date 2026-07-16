@@ -28,6 +28,10 @@ export const incidentRoutes = [
     element: <AllIncidentsPage filter="my-open" />,
   },
   {
+    path: "/incidents/my/assigned",
+    element: <AllIncidentsPage filter="my-assigned" />,
+  },
+  {
     path: "/incidents/my/closed",
     element: <AllIncidentsPage filter="my-closed" />,
   },

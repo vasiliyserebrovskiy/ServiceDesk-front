@@ -6,7 +6,7 @@ import { useIncidents } from "../../../shared/hooks/useIncidents";
 import { useStatuses } from "../../../shared/hooks/useStatuses";
 import { useSubcategories } from "../../../shared/hooks/useSubcategories";
 import { useUsers } from "../../../shared/hooks/useUsers";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import {
   calculatePriority,
   impactOptions,
@@ -37,6 +37,14 @@ export default function DetailsIncidentPage() {
   const { cis, loadCIs } = useCIs();
   const navigate = useNavigate();
   const [incident, setIncident] = useState<Incident | null>(null);
+  const location = useLocation();
+  const justCreatedWithSync = Boolean(
+    (location.state as { justCreatedWithSync?: boolean } | null)
+      ?.justCreatedWithSync,
+  );
+  const [pollingExhausted, setPollingExhausted] = useState(false);
+  const isPollingSync =
+    justCreatedWithSync && !incident?.servicenowSynced && !pollingExhausted;
 
   //Load incident data if neaded
   useEffect(() => {
@@ -67,6 +75,37 @@ export default function DetailsIncidentPage() {
       cancelled = true;
     };
   }, [id, incidents, getIncidentById]);
+
+  // Poll for ServiceNow sync status right after creation, if sync was requested
+  useEffect(() => {
+    if (!justCreatedWithSync || !id) return;
+
+    const maxAttempts = 10;
+    let attempts = 0;
+
+    const intervalId = setInterval(async () => {
+      attempts += 1;
+
+      try {
+        const data = await getIncidentById(id);
+        setIncident(data);
+
+        if (data.servicenowSynced || attempts >= maxAttempts) {
+          clearInterval(intervalId);
+          if (!data.servicenowSynced) {
+            setPollingExhausted(true);
+          }
+        }
+      } catch (error) {
+        console.log(`[poll] error`, error);
+        clearInterval(intervalId);
+        setPollingExhausted(true);
+      }
+    }, 3000);
+
+    return () => clearInterval(intervalId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [justCreatedWithSync, id]);
 
   // Check if we need to load some data from dependency items
   useEffect(() => {
@@ -346,7 +385,13 @@ export default function DetailsIncidentPage() {
                 {/* SERVICENOW SYNC STATUS */}
                 <FormReadOnlyField
                   label="ServiceNow Sync"
-                  value={incident.servicenowSynced ? "Synced" : "Not synced"}
+                  value={
+                    isPollingSync
+                      ? "Syncing..."
+                      : incident.servicenowSynced
+                        ? "Synced"
+                        : "Not synced"
+                  }
                 />
 
                 {/* ASSIGNEE */}
