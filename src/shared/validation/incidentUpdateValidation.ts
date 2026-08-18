@@ -27,4 +27,7 @@ export const IncidentUpdateValidation = Yup.object({
     )
     .required("Shord description is a required field"),
   description: Yup.string(),
+  closeComment: Yup.string(),
+  actualStart: Yup.string(),
+  actualEnd: Yup.string(),
 });

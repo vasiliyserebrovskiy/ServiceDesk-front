@@ -25,6 +25,7 @@ import {
   toNullableSelectOptions,
   toSelectOptions,
 } from "../../../shared/utils/selectOptions";
+import FormDateTimeField from "../../../components/form/FormDateTimeField";
 
 export default function DetailsIncidentPage() {
   const { id } = useParams();
@@ -171,6 +172,9 @@ export default function DetailsIncidentPage() {
     assigneeId: incident.assigneeId ?? "",
     shortDescription: incident.shortDescription ?? "",
     description: incident.description ?? "",
+    closeComment: incident.closeComment ?? "",
+    actualStart: incident.actualStart ?? "",
+    actualEnd: incident.actualEnd ?? "",
   };
 
   const handleSubmit = async (
@@ -190,6 +194,9 @@ export default function DetailsIncidentPage() {
       assigneeId: values.assigneeId,
       shortDescription: values.shortDescription,
       description: values.description,
+      closeComment: values.closeComment,
+      actualStart: values.actualStart,
+      actualEnd: values.actualEnd,
     };
     try {
       await updateIncidentById(id, payload);
@@ -440,6 +447,66 @@ export default function DetailsIncidentPage() {
 
                 {/* DESCRIPTION */}
                 <FormDescField label="Description" name="description" />
+
+                {/* Close fields */}
+                {incident.servicenowSynced ? (
+                  <>
+                    {/* Actual Start At*/}
+                    <FormReadOnlyField
+                      label="Actual Start"
+                      value={
+                        incident.actualStart
+                          ? new Date(incident.actualStart).toLocaleString(
+                              "de-DE",
+                              {
+                                day: "2-digit",
+                                month: "2-digit",
+                                year: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: false,
+                              },
+                            )
+                          : "-"
+                      }
+                    />
+
+                    {/* Actual End At*/}
+                    <FormReadOnlyField
+                      label="Actual End"
+                      value={
+                        incident.actualEnd
+                          ? new Date(incident.actualEnd).toLocaleString(
+                              "de-DE",
+                              {
+                                day: "2-digit",
+                                month: "2-digit",
+                                year: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: false,
+                              },
+                            )
+                          : "-"
+                      }
+                    />
+
+                    <FormReadOnlyField
+                      label="Close comment"
+                      value={incident.closeComment}
+                      divClassName="col-span-2 flex flex-col text-black"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <FormDateTimeField
+                      label="Actual Start"
+                      name="actualStart"
+                    />
+                    <FormDateTimeField label="Actual End" name="actualEnd" />
+                    <FormDescField label="Close comment" name="closeComment" />
+                  </>
+                )}
               </Form>
             );
           }}
