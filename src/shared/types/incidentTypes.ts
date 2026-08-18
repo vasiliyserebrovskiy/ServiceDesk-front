@@ -17,6 +17,9 @@ export interface Incident {
   servicenowSynced: boolean;
   servicenowSyncedAt: string | null;
   createdAt: string;
+  closeComment: string | null;
+  actualStart: string | null;
+  actualEnd: string | null;
 }
 
 export type NextIncidentNumber = {
@@ -53,6 +56,9 @@ export type UpdateIncidentDto = {
   assigneeId: string;
   shortDescription: string;
   description: string;
+  closeComment: string | null;
+  actualStart: string | null;
+  actualEnd: string | null;
 };
 
 export interface IncidentState {
@@ -97,6 +103,9 @@ export type IncidentUpdateFormValues = {
   assigneeId: string;
   shortDescription: string;
   description: string;
+  closeComment: string;
+  actualStart: string;
+  actualEnd: string;
 };
 
 export type IncidentList = {
