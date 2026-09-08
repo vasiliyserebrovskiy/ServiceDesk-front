@@ -89,7 +89,7 @@ export default function AllIncidentsPage({ filter }: Props) {
   }, [incidents, users, categories, statuses, groups]);
 
   /** 4 Loading state */
-  if (loading) {
+  if (loading && !incidents.length) {
     return <div>Loading incidents...</div>;
   }
 
@@ -110,18 +110,26 @@ export default function AllIncidentsPage({ filter }: Props) {
 
   return (
     <div className="flex flex-col min-h-screen px-6 bg-gray-50">
+      {/* START */}
       <div className="flex items-center justify-between p-1">
-        <h2 className="text-gray-500">All Incidents</h2>
-        <div className="flex gap-2">
-          {/* New */}
+        <div className="flex items-center gap-3">
+          <h2 className="text-gray-500">All Incidents</h2>
           <button
-            onClick={() => navigate("/incidents/create")}
-            className="bg-blue-600 text-white px-3 py-0.5 rounded cursor-pointer hover:bg-blue-800 active:scale-95 transition duration-150"
+            onClick={() => loadIncidents()}
+            disabled={loading}
+            className="bg-gray-200 text-gray-700 px-3 py-0.5 rounded cursor-pointer hover:bg-gray-300 active:scale-95 transition duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            New
+            {loading ? "Refreshing..." : "Refresh List"}
           </button>
         </div>
+        <button
+          onClick={() => navigate("/incidents/create")}
+          className="bg-blue-600 text-white px-3 py-0.5 rounded cursor-pointer hover:bg-blue-800 active:scale-95 transition duration-150"
+        >
+          New
+        </button>
       </div>
+      {/* END */}
       <div className="flex">
         <DataTable
           data={filtered}
